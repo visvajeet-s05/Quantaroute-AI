@@ -1,0 +1,7 @@
+{
+  "name": "QuantaRoute AI",
+  "description": "Quantum-Inspired Dynamic Fleet Routing prototype for multi-vehicle delivery-routing under changing traffic conditions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
