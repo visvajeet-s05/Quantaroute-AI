@@ -56,6 +56,8 @@ export type RoutePlan = {
   isFeasible: boolean;
   warnings: string[];
   runtimeMs: number;
+  routingContext?: RoutingContext | null;
+  mode?: RoutingMode;
 };
 
 export type RoutePlanValidationResult = {
@@ -197,7 +199,7 @@ export type RoutingContext = {
   remainingCapacityByVehicleId: Record<string, number>;
   lockedCustomerIds: string[];
   eligibleCustomerIds: string[];
-  graphEdges: import('./domain').Edge[];
+  graphEdges?: import('./domain').Edge[];
 };
 
 // ==========================================

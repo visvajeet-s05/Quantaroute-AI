@@ -1,0 +1,4 @@
+{
+  "tests/test_greedy_routing_service.py::test_3_capacity_limit_exceeding_customer_unserved": true,
+  "tests/test_greedy_routing_service.py::test_6_unreachable_customer_remains_unserved": true
+}

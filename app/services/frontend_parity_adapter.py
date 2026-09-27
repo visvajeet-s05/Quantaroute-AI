@@ -116,6 +116,19 @@ def adapt_routing_context(raw: dict | None) -> RoutingContextSchema | None:
 
 
 def adapt_vehicle_route(raw: dict) -> VehicleRouteSchema:
+    route_dict = dict(raw)
+    nodes = route_dict.get("fullPathNodeIds", [])
+    if "startNodeId" not in route_dict and nodes:
+        route_dict["startNodeId"] = nodes[0]
+    if "endNodeId" not in route_dict and nodes:
+        route_dict["endNodeId"] = nodes[-1]
+    if "completedCustomerIds" not in route_dict:
+        route_dict["completedCustomerIds"] = []
+    if "pendingCustomerIds" not in route_dict:
+        route_dict["pendingCustomerIds"] = list(route_dict.get("customerIds", []))
+    if "isDynamicReroute" not in route_dict:
+        route_dict["isDynamicReroute"] = False
+
     required_route_keys = {
         "vehicleId",
         "customerIds",
@@ -124,7 +137,7 @@ def adapt_vehicle_route(raw: dict) -> VehicleRouteSchema:
         "startNodeId",
         "endNodeId",
     }
-    missing = required_route_keys - set(raw.keys())
+    missing = required_route_keys - set(route_dict.keys())
     if missing:
         raise ParityAdapterError(f"Vehicle route missing required keys: {missing}")
 
@@ -142,7 +155,7 @@ def adapt_vehicle_route(raw: dict) -> VehicleRouteSchema:
         "declaredTravelMinutes",
         "declaredDistanceKm",
     }
-    stripped = {k: v for k, v in raw.items() if k in allowed}
+    stripped = {k: v for k, v in route_dict.items() if k in allowed}
     return VehicleRouteSchema(**stripped)
 
 

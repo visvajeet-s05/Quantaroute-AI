@@ -467,30 +467,39 @@ export function runExperimentUnitTests(scenario: Scenario): ExperimentUnitTestRe
   // Test 6: Local Persistence Safety
   {
     const t0 = performance.now();
-
     const storageKey = getStorageKey();
+    let previousRaw: string | null = null;
+    let storageAvailable = false;
+    let cleanupEnv = false;
 
-    // Create a mock localStorage
-    const store: Record<string, string> = {};
-    const mockStorage = {
-      getItem: (key: string) => (key in store ? store[key] : null),
-      setItem: (key: string, value: string) => {
-        store[key] = value;
-      },
-      removeItem: (key: string) => {
-        delete store[key];
-      },
-      clear: () => {
-        Object.keys(store).forEach((k) => delete store[k]);
-      },
-    };
+    // In a headless Node test environment, mock window & localStorage safely
+    if (typeof (globalThis as Record<string, unknown>).window === 'undefined') {
+      cleanupEnv = true;
+      const store: Record<string, string> = {};
+      const mockStorage = {
+        getItem: (key: string) => (key in store ? store[key] : null),
+        setItem: (key: string, value: string) => {
+          store[key] = String(value);
+        },
+        removeItem: (key: string) => {
+          delete store[key];
+        },
+        clear: () => {
+          Object.keys(store).forEach((k) => delete store[k]);
+        },
+      };
+      (globalThis as Record<string, unknown>).window = globalThis;
+      (globalThis as Record<string, unknown>).localStorage = mockStorage;
+    }
 
-    // Save a test record using the real save function
-    const originalWindow = (globalThis as Record<string, unknown>).window;
-    const originalLocalStorage = (globalThis as Record<string, unknown>).localStorage;
-
-    (globalThis as Record<string, unknown>).window = { localStorage: mockStorage };
-    (globalThis as Record<string, unknown>).localStorage = mockStorage;
+    if (typeof localStorage !== 'undefined') {
+      try {
+        previousRaw = localStorage.getItem(storageKey);
+        storageAvailable = true;
+      } catch {
+        storageAvailable = false;
+      }
+    }
 
     try {
       const testData: ExperimentRecord[] = [
@@ -536,13 +545,17 @@ export function runExperimentUnitTests(scenario: Scenario): ExperimentUnitTestRe
 
       const reloadOk = reloadResult.ok && reloadResult.history.length === 1;
 
-       // Now write malformed data and verify safe recovery
-      store[storageKey] = '{ this is not valid json';
+      // Now write malformed data and verify safe recovery
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(storageKey, '{ this is not valid json');
+      }
       const malformedResult = loadExperimentHistory();
       const malformedHandled = !malformedResult.ok && typeof (malformedResult as { error: string }).error === 'string';
 
       // Write valid JSON but with wrong structure
-      store[storageKey] = JSON.stringify({ not: 'an array', neither: 'records' });
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(storageKey, JSON.stringify({ not: 'an array', neither: 'records' }));
+      }
       const wrongStructResult = loadExperimentHistory();
       const wrongStructHandled = !wrongStructResult.ok;
 
@@ -577,8 +590,21 @@ export function runExperimentUnitTests(scenario: Scenario): ExperimentUnitTestRe
         details: errorMsg,
       });
     } finally {
-      (globalThis as Record<string, unknown>).window = originalWindow;
-      (globalThis as Record<string, unknown>).localStorage = originalLocalStorage;
+      if (storageAvailable && typeof localStorage !== 'undefined') {
+        try {
+          if (previousRaw !== null) {
+            localStorage.setItem(storageKey, previousRaw);
+          } else {
+            localStorage.removeItem(storageKey);
+          }
+        } catch {
+          // ignore restore errors
+        }
+      }
+      if (cleanupEnv) {
+        delete (globalThis as Record<string, unknown>).window;
+        delete (globalThis as Record<string, unknown>).localStorage;
+      }
     }
   }
 

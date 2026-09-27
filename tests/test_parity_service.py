@@ -128,7 +128,7 @@ class TestParityService:
         raw = load_greedy_fixture()
         raw["metadata"]["source"] = "QuantaRoute AI Frontend"
         raw["metadata"]["exportKind"] = "frontend_backend_parity"
-        raw["frontendEvaluation"]["totalTravelMinutes"] = 11.0 + 0.5e-8
+        raw["frontendEvaluation"]["totalTravelMinutes"] = raw["frontendEvaluation"]["totalTravelMinutes"] + 0.5e-8
 
         result = compare_frontend_export(raw, tolerance=1e-8, is_temporary_fixture=False)
 
@@ -139,7 +139,7 @@ class TestParityService:
         raw = load_greedy_fixture()
         raw["metadata"]["source"] = "QuantaRoute AI Frontend"
         raw["metadata"]["exportKind"] = "frontend_backend_parity"
-        raw["frontendEvaluation"]["totalTravelMinutes"] = 11.0 + 2e-8
+        raw["frontendEvaluation"]["totalTravelMinutes"] = raw["frontendEvaluation"]["totalTravelMinutes"] + 2e-8
 
         result = compare_frontend_export(raw, tolerance=1e-8, is_temporary_fixture=False)
 

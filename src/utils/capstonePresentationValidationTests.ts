@@ -182,42 +182,63 @@ export function runCapstonePresentationTests(): CapstoneUnitTestResult[] {
 
   {
     const t0 = performance.now();
+    const screenshotKey = 'quantaroute.capstoneScreenshotChecklist.v1';
+    const readinessKey = 'quantaroute.capstoneReadinessChecklist.v1';
+    let prevScreenshotRaw: string | null = null;
+    let prevReadinessRaw: string | null = null;
+    let storageAvailable = false;
+    let cleanupEnv = false;
+
     try {
-      const originalWindow = (globalThis as Record<string, unknown>).window;
-      const originalLocalStorage = (globalThis as Record<string, unknown>).localStorage;
-      const store: Record<string, string> = {};
-      const mockStorage = {
-        getItem: (key: string) => (key in store ? store[key] : null),
-        setItem: (key: string, val: string) => { store[key] = val; },
-        removeItem: (key: string) => { delete store[key]; },
-        clear: () => { Object.keys(store).forEach((k) => delete store[k]); },
-        key: (i: number) => Object.keys(store)[i] || null,
-        length: Object.keys(store).length,
-      };
-      (globalThis as Record<string, unknown>).window = { localStorage: mockStorage };
-      (globalThis as Record<string, unknown>).localStorage = mockStorage;
+      if (typeof (globalThis as Record<string, unknown>).window === 'undefined') {
+        cleanupEnv = true;
+        const store: Record<string, string> = {};
+        const mockStorage = {
+          getItem: (key: string) => (key in store ? store[key] : null),
+          setItem: (key: string, val: string) => { store[key] = String(val); },
+          removeItem: (key: string) => { delete store[key]; },
+          clear: () => { Object.keys(store).forEach((k) => delete store[k]); },
+          key: (i: number) => Object.keys(store)[i] || null,
+          length: Object.keys(store).length,
+        };
+        (globalThis as Record<string, unknown>).window = globalThis;
+        (globalThis as Record<string, unknown>).localStorage = mockStorage;
+      }
+
+      if (typeof localStorage !== 'undefined') {
+        try {
+          prevScreenshotRaw = localStorage.getItem(screenshotKey);
+          prevReadinessRaw = localStorage.getItem(readinessKey);
+          storageAvailable = true;
+        } catch {
+          storageAvailable = false;
+        }
+      }
+
       const screenshotItems = [{ id: '1', label: 'Test item', completed: true, note: 'test note', timestamp: new Date().toISOString() }];
       saveScreenshotChecklist(screenshotItems);
       const loadedScreenshot = loadScreenshotChecklist();
       const screenshotPersisted = loadedScreenshot.length === 1 && loadedScreenshot[0].id === '1' && loadedScreenshot[0].completed === true;
+
       const readinessCategories = [{ id: 'test', label: 'Test Category', items: screenshotItems, critical: true }];
       saveReadinessChecklist(readinessCategories);
       const loadedReadiness = loadReadinessChecklist();
       const readinessPersisted = loadedReadiness.length === 1 && loadedReadiness[0].items.length === 1;
-      const screenshotKey = 'quantaroute.capstoneScreenshotChecklist.v1';
-      const readinessKey = 'quantaroute.capstoneReadinessChecklist.v1';
-      store[screenshotKey] = '{ invalid json';
-      store[readinessKey] = '{"not": "array"}';
+
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(screenshotKey, '{ invalid json');
+        localStorage.setItem(readinessKey, '{"not": "array"}');
+      }
       const malformedScreenshot = loadScreenshotChecklist();
       const malformedReadiness = loadReadinessChecklist();
       const malformedHandled = malformedScreenshot.length === 0 && malformedReadiness.length === 0;
+
       saveScreenshotChecklist([]);
       saveReadinessChecklist([]);
       const clearedScreenshot = loadScreenshotChecklist();
       const clearedReadiness = loadReadinessChecklist();
       const clearedOk = clearedScreenshot.length === 0 && clearedReadiness.length === 0;
-      (globalThis as Record<string, unknown>).window = originalWindow;
-      (globalThis as Record<string, unknown>).localStorage = originalLocalStorage;
+
       const passed = screenshotPersisted && readinessPersisted && malformedHandled && clearedOk;
       const t1 = performance.now();
       results.push({
@@ -227,10 +248,6 @@ export function runCapstonePresentationTests(): CapstoneUnitTestResult[] {
         details: `Screenshot persisted: ${screenshotPersisted}; Readiness persisted: ${readinessPersisted}; Malformed handled: ${malformedHandled}; Cleared OK: ${clearedOk}.`,
       });
     } catch (err) {
-      const ow = (globalThis as Record<string, unknown>).window;
-      const ol = (globalThis as Record<string, unknown>).localStorage;
-      (globalThis as Record<string, unknown>).window = ow;
-      (globalThis as Record<string, unknown>).localStorage = ol;
       const t1 = performance.now();
       results.push({
         id: 'capstone-test-5', name: 'Checklist Persistence', passed: false,
@@ -238,6 +255,27 @@ export function runCapstonePresentationTests(): CapstoneUnitTestResult[] {
         summary: 'Error during checklist persistence test.',
         details: err instanceof Error ? err.message : String(err),
       });
+    } finally {
+      if (storageAvailable && typeof localStorage !== 'undefined') {
+        try {
+          if (prevScreenshotRaw !== null) {
+            localStorage.setItem(screenshotKey, prevScreenshotRaw);
+          } else {
+            localStorage.removeItem(screenshotKey);
+          }
+          if (prevReadinessRaw !== null) {
+            localStorage.setItem(readinessKey, prevReadinessRaw);
+          } else {
+            localStorage.removeItem(readinessKey);
+          }
+        } catch {
+          // ignore cleanup errors
+        }
+      }
+      if (cleanupEnv) {
+        delete (globalThis as Record<string, unknown>).window;
+        delete (globalThis as Record<string, unknown>).localStorage;
+      }
     }
   }
 

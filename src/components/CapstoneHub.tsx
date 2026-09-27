@@ -54,6 +54,7 @@ export const CapstoneHub: React.FC<CapstoneHubProps> = ({
   scenario, 
   experimentHistory = [],
   selectedExperimentRecord = null,
+  onSelectRecord,
 }) => {
   const [activeTab, setActiveTab] = useState<TabId>('guided');
   const [history, setHistory] = useState<ExperimentHistoryType>([]);
@@ -137,9 +138,10 @@ export const CapstoneHub: React.FC<CapstoneHubProps> = ({
 
         {activeTab === 'parity' && scenario && (
           <FrontendBackendParityExport
-            history={experimentHistory}
+            history={experimentHistory.length > 0 ? experimentHistory : history}
             scenario={scenario}
             selectedRecord={selectedExperimentRecord as any}
+            onSelectRecord={onSelectRecord as any}
           />
         )}
       </div>

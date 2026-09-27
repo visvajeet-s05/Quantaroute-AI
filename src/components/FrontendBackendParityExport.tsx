@@ -3,13 +3,21 @@ import { Download, Copy, CheckCircle2, XCircle, AlertCircle, FileJson, Clipboard
 import { ExperimentRecord, InitialRoutingExperimentRecord } from '../types/experiments';
 import { Scenario } from '../types/domain';
 import { RoutePlan } from '../types/routing';
-import { buildParityExport, validateParityExportLocally, generateParityFilename, FrontendBackendParityExport, ParityExportValidationResult } from '../utils/frontendParityExport';
+import type { FrontendBackendParityExport as ParityExportData, ParityExportValidationResult } from '../types/parity';
+import {
+  buildParityExport,
+  validateParityExportLocally,
+  generateParityFilename,
+  downloadParityExport,
+  copyParityExport,
+} from '../utils/frontendParityExport';
 import { FrontendParityMetadata } from '../types/parity';
 
 interface FrontendBackendParityExportProps {
   history: ExperimentRecord[];
   scenario: Scenario | null;
   selectedRecord: InitialRoutingExperimentRecord | null;
+  onSelectRecord?: (record: InitialRoutingExperimentRecord) => void;
   onClose?: () => void;
 }
 
@@ -17,10 +25,12 @@ export const FrontendBackendParityExport: React.FC<FrontendBackendParityExportPr
   history,
   scenario,
   selectedRecord,
+  onSelectRecord,
   onClose,
 }) => {
+  const [internalRecordId, setInternalRecordId] = useState<string | null>(null);
   const [validationResult, setValidationResult] = useState<ParityExportValidationResult | null>(null);
-  const [exportData, setExportData] = useState<FrontendBackendParityExport | null>(null);
+  const [exportData, setExportData] = useState<ParityExportData | null>(null);
   const [isBuilding, setIsBuilding] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
   const [buildError, setBuildError] = useState<string | null>(null);
@@ -34,25 +44,36 @@ export const FrontendBackendParityExport: React.FC<FrontendBackendParityExportPr
     );
   }, [history]);
 
+  const activeRecord = useMemo(() => {
+    if (internalRecordId) {
+      const found = availableRecords.find(r => r.id === internalRecordId);
+      if (found) return found;
+    }
+    if (selectedRecord && availableRecords.some(r => r.id === selectedRecord.id)) {
+      return selectedRecord;
+    }
+    return availableRecords.length > 0 ? availableRecords[availableRecords.length - 1] : null;
+  }, [availableRecords, internalRecordId, selectedRecord]);
+
   // Determine if we can build export from selected record
-  const canExport = selectedRecord && scenario;
+  const canExport = !!(activeRecord && scenario);
   const missingReason = useMemo(() => {
     if (!scenario) return 'No scenario loaded';
-    if (!selectedRecord) return 'No experiment record selected';
-    if (selectedRecord.runType !== 'initial_routing') return 'Only initial routing records supported';
-    if (!selectedRecord.routePlan) return 'Selected record has no RoutePlan';
+    if (!activeRecord) return 'No experiment record available';
+    if (activeRecord.runType !== 'initial_routing') return 'Only initial routing records supported';
+    if (!activeRecord.routePlan) return 'Selected record has no RoutePlan';
     return null;
-  }, [scenario, selectedRecord]);
+  }, [scenario, activeRecord]);
 
   const handleValidate = () => {
-    if (!canExport || !selectedRecord || !scenario) return;
+    if (!canExport || !activeRecord || !scenario) return;
     
     setIsValidating(true);
     setBuildError(null);
     
     // Build export first, then validate
     const result = buildParityExport({
-      experimentRecord: selectedRecord,
+      experimentRecord: activeRecord,
       scenario,
       appVersion: '1.0.0',
     });
@@ -72,12 +93,12 @@ export const FrontendBackendParityExport: React.FC<FrontendBackendParityExportPr
   };
 
   const handleDownload = () => {
-    if (!exportData || !selectedRecord) return;
+    if (!exportData || !activeRecord) return;
     
     setDownloaded(true);
     const filename = generateParityFilename(
-      selectedRecord.algorithm,
-      selectedRecord.scenarioSeed
+      activeRecord.algorithm,
+      activeRecord.scenarioSeed
     );
     downloadParityExport(exportData, filename);
     
@@ -149,19 +170,19 @@ export const FrontendBackendParityExport: React.FC<FrontendBackendParityExportPr
               : `Export unavailable: ${missingReason}`}
           </span>
         </div>
-        {canExport && selectedRecord && (
+        {canExport && activeRecord && (
           <div className="mt-2 flex flex-wrap gap-2 text-[10px] text-slate-600">
-            <span className={`px-2 py-0.5 rounded ${getAlgorithmColor(selectedRecord.algorithm)}`}>
-              {selectedRecord.algorithmLabel}
+            <span className={`px-2 py-0.5 rounded ${getAlgorithmColor(activeRecord.algorithm)}`}>
+              {activeRecord.algorithmLabel}
             </span>
             <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700">
-              Seed: {selectedRecord.scenarioSeed}
+              Seed: {activeRecord.scenarioSeed}
             </span>
             <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700">
-              {selectedRecord.optimizerPreset}
+              {activeRecord.optimizerPreset}
             </span>
             <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700">
-              {selectedRecord.feasible ? 'Feasible' : 'Infeasible'}
+              {activeRecord.feasible ? 'Feasible' : 'Infeasible'}
             </span>
           </div>
         )}
@@ -184,15 +205,14 @@ export const FrontendBackendParityExport: React.FC<FrontendBackendParityExportPr
               <button
                 key={record.id}
                 onClick={() => {
-                  // Selection handled by parent via selectedRecord prop
-                  // This button just shows available records
+                  setInternalRecordId(record.id);
+                  onSelectRecord?.(record);
                 }}
                 className={`p-3 rounded-lg border-2 text-left text-xs transition-all ${
-                  selectedRecord?.id === record.id
-                    ? 'border-cyan-500 bg-cyan-50'
-                    : 'border-slate-200 bg-white hover:bg-slate-50'
+                  activeRecord?.id === record.id
+                    ? 'border-cyan-500 bg-cyan-50 shadow-sm ring-1 ring-cyan-400'
+                    : 'border-slate-200 bg-white hover:bg-slate-50 cursor-pointer'
                 }`}
-                disabled={selectedRecord?.id === record.id}
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className={`font-medium ${getAlgorithmColor(record.algorithm)}`}>
@@ -364,6 +384,3 @@ export const FrontendBackendParityExport: React.FC<FrontendBackendParityExportPr
     </div>
   );
 };
-
-// Re-export download and copy functions for component use
-import { downloadParityExport, copyParityExport } from '../utils/frontendParityExport';

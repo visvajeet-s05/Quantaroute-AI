@@ -126,6 +126,7 @@ function buildInitialRecord(
     feasible: plan.isFeasible,
     warnings: [...plan.warnings],
     convergenceHistory,
+    routePlan: plan,
   };
 }
 

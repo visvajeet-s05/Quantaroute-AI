@@ -1,0 +1,4419 @@
+{
+  "metadata": {
+    "source": "QuantaRoute AI Frontend",
+    "exportKind": "frontend_backend_parity",
+    "exportedAt": "2026-09-27T07:59:23.115Z",
+    "scenarioSeed": 26137,
+    "algorithm": "greedy",
+    "preset": "standard",
+    "optimizerSeed": 26137,
+    "appVersion": "1.0.0",
+    "sourceVerified": true
+  },
+  "scenario": {
+    "id": "scenario_normal_26137",
+    "name": "Normal Traffic (Default Baseline)",
+    "seed": 26137,
+    "depotNodeId": "n_3_4",
+    "nodes": [
+      {
+        "id": "n_0_0",
+        "x": 0,
+        "y": 0,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_1_0",
+        "x": 1,
+        "y": 0,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_2_0",
+        "x": 2,
+        "y": 0,
+        "kind": "customer"
+      },
+      {
+        "id": "n_3_0",
+        "x": 3,
+        "y": 0,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_4_0",
+        "x": 4,
+        "y": 0,
+        "kind": "customer"
+      },
+      {
+        "id": "n_5_0",
+        "x": 5,
+        "y": 0,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_6_0",
+        "x": 6,
+        "y": 0,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_7_0",
+        "x": 7,
+        "y": 0,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_8_0",
+        "x": 8,
+        "y": 0,
+        "kind": "customer"
+      },
+      {
+        "id": "n_9_0",
+        "x": 9,
+        "y": 0,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_0_1",
+        "x": 0,
+        "y": 1,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_1_1",
+        "x": 1,
+        "y": 1,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_2_1",
+        "x": 2,
+        "y": 1,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_3_1",
+        "x": 3,
+        "y": 1,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_4_1",
+        "x": 4,
+        "y": 1,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_5_1",
+        "x": 5,
+        "y": 1,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_6_1",
+        "x": 6,
+        "y": 1,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_7_1",
+        "x": 7,
+        "y": 1,
+        "kind": "customer"
+      },
+      {
+        "id": "n_8_1",
+        "x": 8,
+        "y": 1,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_9_1",
+        "x": 9,
+        "y": 1,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_0_2",
+        "x": 0,
+        "y": 2,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_1_2",
+        "x": 1,
+        "y": 2,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_2_2",
+        "x": 2,
+        "y": 2,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_3_2",
+        "x": 3,
+        "y": 2,
+        "kind": "customer"
+      },
+      {
+        "id": "n_4_2",
+        "x": 4,
+        "y": 2,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_5_2",
+        "x": 5,
+        "y": 2,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_6_2",
+        "x": 6,
+        "y": 2,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_7_2",
+        "x": 7,
+        "y": 2,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_8_2",
+        "x": 8,
+        "y": 2,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_9_2",
+        "x": 9,
+        "y": 2,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_0_3",
+        "x": 0,
+        "y": 3,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_1_3",
+        "x": 1,
+        "y": 3,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_2_3",
+        "x": 2,
+        "y": 3,
+        "kind": "customer"
+      },
+      {
+        "id": "n_3_3",
+        "x": 3,
+        "y": 3,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_4_3",
+        "x": 4,
+        "y": 3,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_5_3",
+        "x": 5,
+        "y": 3,
+        "kind": "customer"
+      },
+      {
+        "id": "n_6_3",
+        "x": 6,
+        "y": 3,
+        "kind": "customer"
+      },
+      {
+        "id": "n_7_3",
+        "x": 7,
+        "y": 3,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_8_3",
+        "x": 8,
+        "y": 3,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_9_3",
+        "x": 9,
+        "y": 3,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_0_4",
+        "x": 0,
+        "y": 4,
+        "kind": "customer"
+      },
+      {
+        "id": "n_1_4",
+        "x": 1,
+        "y": 4,
+        "kind": "customer"
+      },
+      {
+        "id": "n_2_4",
+        "x": 2,
+        "y": 4,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_3_4",
+        "x": 3,
+        "y": 4,
+        "kind": "depot"
+      },
+      {
+        "id": "n_4_4",
+        "x": 4,
+        "y": 4,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_5_4",
+        "x": 5,
+        "y": 4,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_6_4",
+        "x": 6,
+        "y": 4,
+        "kind": "customer"
+      },
+      {
+        "id": "n_7_4",
+        "x": 7,
+        "y": 4,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_8_4",
+        "x": 8,
+        "y": 4,
+        "kind": "customer"
+      },
+      {
+        "id": "n_9_4",
+        "x": 9,
+        "y": 4,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_0_5",
+        "x": 0,
+        "y": 5,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_1_5",
+        "x": 1,
+        "y": 5,
+        "kind": "customer"
+      },
+      {
+        "id": "n_2_5",
+        "x": 2,
+        "y": 5,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_3_5",
+        "x": 3,
+        "y": 5,
+        "kind": "customer"
+      },
+      {
+        "id": "n_4_5",
+        "x": 4,
+        "y": 5,
+        "kind": "customer"
+      },
+      {
+        "id": "n_5_5",
+        "x": 5,
+        "y": 5,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_6_5",
+        "x": 6,
+        "y": 5,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_7_5",
+        "x": 7,
+        "y": 5,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_8_5",
+        "x": 8,
+        "y": 5,
+        "kind": "customer"
+      },
+      {
+        "id": "n_9_5",
+        "x": 9,
+        "y": 5,
+        "kind": "customer"
+      },
+      {
+        "id": "n_0_6",
+        "x": 0,
+        "y": 6,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_1_6",
+        "x": 1,
+        "y": 6,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_2_6",
+        "x": 2,
+        "y": 6,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_3_6",
+        "x": 3,
+        "y": 6,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_4_6",
+        "x": 4,
+        "y": 6,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_5_6",
+        "x": 5,
+        "y": 6,
+        "kind": "customer"
+      },
+      {
+        "id": "n_6_6",
+        "x": 6,
+        "y": 6,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_7_6",
+        "x": 7,
+        "y": 6,
+        "kind": "customer"
+      },
+      {
+        "id": "n_8_6",
+        "x": 8,
+        "y": 6,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_9_6",
+        "x": 9,
+        "y": 6,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_0_7",
+        "x": 0,
+        "y": 7,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_1_7",
+        "x": 1,
+        "y": 7,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_2_7",
+        "x": 2,
+        "y": 7,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_3_7",
+        "x": 3,
+        "y": 7,
+        "kind": "customer"
+      },
+      {
+        "id": "n_4_7",
+        "x": 4,
+        "y": 7,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_5_7",
+        "x": 5,
+        "y": 7,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_6_7",
+        "x": 6,
+        "y": 7,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_7_7",
+        "x": 7,
+        "y": 7,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_8_7",
+        "x": 8,
+        "y": 7,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_9_7",
+        "x": 9,
+        "y": 7,
+        "kind": "customer"
+      },
+      {
+        "id": "n_0_8",
+        "x": 0,
+        "y": 8,
+        "kind": "customer"
+      },
+      {
+        "id": "n_1_8",
+        "x": 1,
+        "y": 8,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_2_8",
+        "x": 2,
+        "y": 8,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_3_8",
+        "x": 3,
+        "y": 8,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_4_8",
+        "x": 4,
+        "y": 8,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_5_8",
+        "x": 5,
+        "y": 8,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_6_8",
+        "x": 6,
+        "y": 8,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_7_8",
+        "x": 7,
+        "y": 8,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_8_8",
+        "x": 8,
+        "y": 8,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_9_8",
+        "x": 9,
+        "y": 8,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_0_9",
+        "x": 0,
+        "y": 9,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_1_9",
+        "x": 1,
+        "y": 9,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_2_9",
+        "x": 2,
+        "y": 9,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_3_9",
+        "x": 3,
+        "y": 9,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_4_9",
+        "x": 4,
+        "y": 9,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_5_9",
+        "x": 5,
+        "y": 9,
+        "kind": "customer"
+      },
+      {
+        "id": "n_6_9",
+        "x": 6,
+        "y": 9,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_7_9",
+        "x": 7,
+        "y": 9,
+        "kind": "customer"
+      },
+      {
+        "id": "n_8_9",
+        "x": 8,
+        "y": 9,
+        "kind": "intersection"
+      },
+      {
+        "id": "n_9_9",
+        "x": 9,
+        "y": 9,
+        "kind": "customer"
+      }
+    ],
+    "edges": [
+      {
+        "id": "e_n_0_0_to_n_1_0",
+        "from": "n_0_0",
+        "to": "n_1_0",
+        "distanceKm": 1.04,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_0_to_n_0_0",
+        "from": "n_1_0",
+        "to": "n_0_0",
+        "distanceKm": 1.04,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_0_to_n_0_1",
+        "from": "n_0_0",
+        "to": "n_0_1",
+        "distanceKm": 0.9,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 2.25,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_1_to_n_0_0",
+        "from": "n_0_1",
+        "to": "n_0_0",
+        "distanceKm": 0.9,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_0_to_n_2_0",
+        "from": "n_1_0",
+        "to": "n_2_0",
+        "distanceKm": 0.95,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 2.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_0_to_n_1_0",
+        "from": "n_2_0",
+        "to": "n_1_0",
+        "distanceKm": 0.95,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_0_to_n_1_1",
+        "from": "n_1_0",
+        "to": "n_1_1",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_1_to_n_1_0",
+        "from": "n_1_1",
+        "to": "n_1_0",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_0_to_n_3_0",
+        "from": "n_2_0",
+        "to": "n_3_0",
+        "distanceKm": 1.06,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_0_to_n_2_0",
+        "from": "n_3_0",
+        "to": "n_2_0",
+        "distanceKm": 1.06,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 2.16,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_0_to_n_2_1",
+        "from": "n_2_0",
+        "to": "n_2_1",
+        "distanceKm": 1.15,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_1_to_n_2_0",
+        "from": "n_2_1",
+        "to": "n_2_0",
+        "distanceKm": 1.15,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_0_to_n_4_0",
+        "from": "n_3_0",
+        "to": "n_4_0",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.94,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_0_to_n_3_0",
+        "from": "n_4_0",
+        "to": "n_3_0",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_0_to_n_3_1",
+        "from": "n_3_0",
+        "to": "n_3_1",
+        "distanceKm": 1.14,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_1_to_n_3_0",
+        "from": "n_3_1",
+        "to": "n_3_0",
+        "distanceKm": 1.14,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_0_to_n_5_0",
+        "from": "n_4_0",
+        "to": "n_5_0",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.69,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_0_to_n_4_0",
+        "from": "n_5_0",
+        "to": "n_4_0",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_0_to_n_4_1",
+        "from": "n_4_0",
+        "to": "n_4_1",
+        "distanceKm": 1.15,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_1_to_n_4_0",
+        "from": "n_4_1",
+        "to": "n_4_0",
+        "distanceKm": 1.15,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.4,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_0_to_n_6_0",
+        "from": "n_5_0",
+        "to": "n_6_0",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.6,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_0_to_n_5_0",
+        "from": "n_6_0",
+        "to": "n_5_0",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_0_to_n_5_1",
+        "from": "n_5_0",
+        "to": "n_5_1",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.52,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_1_to_n_5_0",
+        "from": "n_5_1",
+        "to": "n_5_0",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_0_to_n_7_0",
+        "from": "n_6_0",
+        "to": "n_7_0",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.09,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_0_to_n_6_0",
+        "from": "n_7_0",
+        "to": "n_6_0",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_0_to_n_6_1",
+        "from": "n_6_0",
+        "to": "n_6_1",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.46,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_1_to_n_6_0",
+        "from": "n_6_1",
+        "to": "n_6_0",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.53,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_0_to_n_8_0",
+        "from": "n_7_0",
+        "to": "n_8_0",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_0_to_n_7_0",
+        "from": "n_8_0",
+        "to": "n_7_0",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.02,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_0_to_n_7_1",
+        "from": "n_7_0",
+        "to": "n_7_1",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_1_to_n_7_0",
+        "from": "n_7_1",
+        "to": "n_7_0",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_0_to_n_9_0",
+        "from": "n_8_0",
+        "to": "n_9_0",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_0_to_n_8_0",
+        "from": "n_9_0",
+        "to": "n_8_0",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.59,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_0_to_n_8_1",
+        "from": "n_8_0",
+        "to": "n_8_1",
+        "distanceKm": 1.04,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.09,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_1_to_n_8_0",
+        "from": "n_8_1",
+        "to": "n_8_0",
+        "distanceKm": 1.04,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.15,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_0_to_n_9_1",
+        "from": "n_9_0",
+        "to": "n_9_1",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_1_to_n_9_0",
+        "from": "n_9_1",
+        "to": "n_9_0",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_1_to_n_1_1",
+        "from": "n_0_1",
+        "to": "n_1_1",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 2.34,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_1_to_n_0_1",
+        "from": "n_1_1",
+        "to": "n_0_1",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_1_to_n_0_2",
+        "from": "n_0_1",
+        "to": "n_0_2",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_2_to_n_0_1",
+        "from": "n_0_2",
+        "to": "n_0_1",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.37,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_1_to_n_2_1",
+        "from": "n_1_1",
+        "to": "n_2_1",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_1_to_n_1_1",
+        "from": "n_2_1",
+        "to": "n_1_1",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_1_to_n_1_2",
+        "from": "n_1_1",
+        "to": "n_1_2",
+        "distanceKm": 1.05,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_2_to_n_1_1",
+        "from": "n_1_2",
+        "to": "n_1_1",
+        "distanceKm": 1.05,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.14,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_1_to_n_3_1",
+        "from": "n_2_1",
+        "to": "n_3_1",
+        "distanceKm": 0.95,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.61,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_1_to_n_2_1",
+        "from": "n_3_1",
+        "to": "n_2_1",
+        "distanceKm": 0.95,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_1_to_n_2_2",
+        "from": "n_2_1",
+        "to": "n_2_2",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_2_to_n_2_1",
+        "from": "n_2_2",
+        "to": "n_2_1",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 2.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_1_to_n_4_1",
+        "from": "n_3_1",
+        "to": "n_4_1",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_1_to_n_3_1",
+        "from": "n_4_1",
+        "to": "n_3_1",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.43,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_1_to_n_3_2",
+        "from": "n_3_1",
+        "to": "n_3_2",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_2_to_n_3_1",
+        "from": "n_3_2",
+        "to": "n_3_1",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_1_to_n_5_1",
+        "from": "n_4_1",
+        "to": "n_5_1",
+        "distanceKm": 1.06,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_1_to_n_4_1",
+        "from": "n_5_1",
+        "to": "n_4_1",
+        "distanceKm": 1.06,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.59,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_1_to_n_4_2",
+        "from": "n_4_1",
+        "to": "n_4_2",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.36,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_2_to_n_4_1",
+        "from": "n_4_2",
+        "to": "n_4_1",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_1_to_n_6_1",
+        "from": "n_5_1",
+        "to": "n_6_1",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_1_to_n_5_1",
+        "from": "n_6_1",
+        "to": "n_5_1",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.94,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_1_to_n_5_2",
+        "from": "n_5_1",
+        "to": "n_5_2",
+        "distanceKm": 1.05,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_2_to_n_5_1",
+        "from": "n_5_2",
+        "to": "n_5_1",
+        "distanceKm": 1.05,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_1_to_n_7_1",
+        "from": "n_6_1",
+        "to": "n_7_1",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_1_to_n_6_1",
+        "from": "n_7_1",
+        "to": "n_6_1",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_1_to_n_6_2",
+        "from": "n_6_1",
+        "to": "n_6_2",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_2_to_n_6_1",
+        "from": "n_6_2",
+        "to": "n_6_1",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_1_to_n_8_1",
+        "from": "n_7_1",
+        "to": "n_8_1",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.14,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_1_to_n_7_1",
+        "from": "n_8_1",
+        "to": "n_7_1",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_1_to_n_7_2",
+        "from": "n_7_1",
+        "to": "n_7_2",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_2_to_n_7_1",
+        "from": "n_7_2",
+        "to": "n_7_1",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_1_to_n_9_1",
+        "from": "n_8_1",
+        "to": "n_9_1",
+        "distanceKm": 1.14,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.54,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_1_to_n_8_1",
+        "from": "n_9_1",
+        "to": "n_8_1",
+        "distanceKm": 1.14,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_1_to_n_8_2",
+        "from": "n_8_1",
+        "to": "n_8_2",
+        "distanceKm": 1.14,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 2.09,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_2_to_n_8_1",
+        "from": "n_8_2",
+        "to": "n_8_1",
+        "distanceKm": 1.14,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.66,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_1_to_n_9_2",
+        "from": "n_9_1",
+        "to": "n_9_2",
+        "distanceKm": 0.95,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.02,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_2_to_n_9_1",
+        "from": "n_9_2",
+        "to": "n_9_1",
+        "distanceKm": 0.95,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_2_to_n_1_2",
+        "from": "n_0_2",
+        "to": "n_1_2",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_2_to_n_0_2",
+        "from": "n_1_2",
+        "to": "n_0_2",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_2_to_n_0_3",
+        "from": "n_0_2",
+        "to": "n_0_3",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_3_to_n_0_2",
+        "from": "n_0_3",
+        "to": "n_0_2",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_2_to_n_2_2",
+        "from": "n_1_2",
+        "to": "n_2_2",
+        "distanceKm": 1.14,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_2_to_n_1_2",
+        "from": "n_2_2",
+        "to": "n_1_2",
+        "distanceKm": 1.14,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_2_to_n_1_3",
+        "from": "n_1_2",
+        "to": "n_1_3",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.41,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_3_to_n_1_2",
+        "from": "n_1_3",
+        "to": "n_1_2",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_2_to_n_3_2",
+        "from": "n_2_2",
+        "to": "n_3_2",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.15,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_2_to_n_2_2",
+        "from": "n_3_2",
+        "to": "n_2_2",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_2_to_n_2_3",
+        "from": "n_2_2",
+        "to": "n_2_3",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_3_to_n_2_2",
+        "from": "n_2_3",
+        "to": "n_2_2",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.65,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_2_to_n_4_2",
+        "from": "n_3_2",
+        "to": "n_4_2",
+        "distanceKm": 1,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.15,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_2_to_n_3_2",
+        "from": "n_4_2",
+        "to": "n_3_2",
+        "distanceKm": 1,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.97,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_2_to_n_3_3",
+        "from": "n_3_2",
+        "to": "n_3_3",
+        "distanceKm": 1.06,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_3_to_n_3_2",
+        "from": "n_3_3",
+        "to": "n_3_2",
+        "distanceKm": 1.06,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.09,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_2_to_n_5_2",
+        "from": "n_4_2",
+        "to": "n_5_2",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_2_to_n_4_2",
+        "from": "n_5_2",
+        "to": "n_4_2",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_2_to_n_4_3",
+        "from": "n_4_2",
+        "to": "n_4_3",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_3_to_n_4_2",
+        "from": "n_4_3",
+        "to": "n_4_2",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_2_to_n_6_2",
+        "from": "n_5_2",
+        "to": "n_6_2",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_2_to_n_5_2",
+        "from": "n_6_2",
+        "to": "n_5_2",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_2_to_n_5_3",
+        "from": "n_5_2",
+        "to": "n_5_3",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_3_to_n_5_2",
+        "from": "n_5_3",
+        "to": "n_5_2",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_2_to_n_7_2",
+        "from": "n_6_2",
+        "to": "n_7_2",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_2_to_n_6_2",
+        "from": "n_7_2",
+        "to": "n_6_2",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_2_to_n_6_3",
+        "from": "n_6_2",
+        "to": "n_6_3",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_3_to_n_6_2",
+        "from": "n_6_3",
+        "to": "n_6_2",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_2_to_n_8_2",
+        "from": "n_7_2",
+        "to": "n_8_2",
+        "distanceKm": 1.14,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.46,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_2_to_n_7_2",
+        "from": "n_8_2",
+        "to": "n_7_2",
+        "distanceKm": 1.14,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.51,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_2_to_n_7_3",
+        "from": "n_7_2",
+        "to": "n_7_3",
+        "distanceKm": 1,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_3_to_n_7_2",
+        "from": "n_7_3",
+        "to": "n_7_2",
+        "distanceKm": 1,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_2_to_n_9_2",
+        "from": "n_8_2",
+        "to": "n_9_2",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_2_to_n_8_2",
+        "from": "n_9_2",
+        "to": "n_8_2",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 2.35,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_2_to_n_8_3",
+        "from": "n_8_2",
+        "to": "n_8_3",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_3_to_n_8_2",
+        "from": "n_8_3",
+        "to": "n_8_2",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_2_to_n_9_3",
+        "from": "n_9_2",
+        "to": "n_9_3",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_3_to_n_9_2",
+        "from": "n_9_3",
+        "to": "n_9_2",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_3_to_n_1_3",
+        "from": "n_0_3",
+        "to": "n_1_3",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_3_to_n_0_3",
+        "from": "n_1_3",
+        "to": "n_0_3",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.65,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_3_to_n_0_4",
+        "from": "n_0_3",
+        "to": "n_0_4",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_4_to_n_0_3",
+        "from": "n_0_4",
+        "to": "n_0_3",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 2.21,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_3_to_n_2_3",
+        "from": "n_1_3",
+        "to": "n_2_3",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_3_to_n_1_3",
+        "from": "n_2_3",
+        "to": "n_1_3",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_3_to_n_1_4",
+        "from": "n_1_3",
+        "to": "n_1_4",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.58,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_4_to_n_1_3",
+        "from": "n_1_4",
+        "to": "n_1_3",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.14,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_3_to_n_3_3",
+        "from": "n_2_3",
+        "to": "n_3_3",
+        "distanceKm": 1.15,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_3_to_n_2_3",
+        "from": "n_3_3",
+        "to": "n_2_3",
+        "distanceKm": 1.15,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_3_to_n_2_4",
+        "from": "n_2_3",
+        "to": "n_2_4",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.09,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_4_to_n_2_3",
+        "from": "n_2_4",
+        "to": "n_2_3",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_3_to_n_4_3",
+        "from": "n_3_3",
+        "to": "n_4_3",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_3_to_n_3_3",
+        "from": "n_4_3",
+        "to": "n_3_3",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_3_to_n_3_4",
+        "from": "n_3_3",
+        "to": "n_3_4",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_4_to_n_3_3",
+        "from": "n_3_4",
+        "to": "n_3_3",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_3_to_n_5_3",
+        "from": "n_4_3",
+        "to": "n_5_3",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_3_to_n_4_3",
+        "from": "n_5_3",
+        "to": "n_4_3",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_3_to_n_4_4",
+        "from": "n_4_3",
+        "to": "n_4_4",
+        "distanceKm": 1.05,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_4_to_n_4_3",
+        "from": "n_4_4",
+        "to": "n_4_3",
+        "distanceKm": 1.05,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_3_to_n_6_3",
+        "from": "n_5_3",
+        "to": "n_6_3",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_3_to_n_5_3",
+        "from": "n_6_3",
+        "to": "n_5_3",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_3_to_n_5_4",
+        "from": "n_5_3",
+        "to": "n_5_4",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_4_to_n_5_3",
+        "from": "n_5_4",
+        "to": "n_5_3",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_3_to_n_7_3",
+        "from": "n_6_3",
+        "to": "n_7_3",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.02,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_3_to_n_6_3",
+        "from": "n_7_3",
+        "to": "n_6_3",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_3_to_n_6_4",
+        "from": "n_6_3",
+        "to": "n_6_4",
+        "distanceKm": 1,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_4_to_n_6_3",
+        "from": "n_6_4",
+        "to": "n_6_3",
+        "distanceKm": 1,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_3_to_n_8_3",
+        "from": "n_7_3",
+        "to": "n_8_3",
+        "distanceKm": 1.06,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_3_to_n_7_3",
+        "from": "n_8_3",
+        "to": "n_7_3",
+        "distanceKm": 1.06,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_3_to_n_7_4",
+        "from": "n_7_3",
+        "to": "n_7_4",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_4_to_n_7_3",
+        "from": "n_7_4",
+        "to": "n_7_3",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_3_to_n_9_3",
+        "from": "n_8_3",
+        "to": "n_9_3",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_3_to_n_8_3",
+        "from": "n_9_3",
+        "to": "n_8_3",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_3_to_n_8_4",
+        "from": "n_8_3",
+        "to": "n_8_4",
+        "distanceKm": 0.95,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_4_to_n_8_3",
+        "from": "n_8_4",
+        "to": "n_8_3",
+        "distanceKm": 0.95,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.59,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_3_to_n_9_4",
+        "from": "n_9_3",
+        "to": "n_9_4",
+        "distanceKm": 0.93,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_4_to_n_9_3",
+        "from": "n_9_4",
+        "to": "n_9_3",
+        "distanceKm": 0.93,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_4_to_n_1_4",
+        "from": "n_0_4",
+        "to": "n_1_4",
+        "distanceKm": 1.06,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.14,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_4_to_n_0_4",
+        "from": "n_1_4",
+        "to": "n_0_4",
+        "distanceKm": 1.06,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.41,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_4_to_n_0_5",
+        "from": "n_0_4",
+        "to": "n_0_5",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_5_to_n_0_4",
+        "from": "n_0_5",
+        "to": "n_0_4",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.59,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_4_to_n_2_4",
+        "from": "n_1_4",
+        "to": "n_2_4",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.51,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_4_to_n_1_4",
+        "from": "n_2_4",
+        "to": "n_1_4",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_4_to_n_1_5",
+        "from": "n_1_4",
+        "to": "n_1_5",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_5_to_n_1_4",
+        "from": "n_1_5",
+        "to": "n_1_4",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.61,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_4_to_n_3_4",
+        "from": "n_2_4",
+        "to": "n_3_4",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_4_to_n_2_4",
+        "from": "n_3_4",
+        "to": "n_2_4",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 2.32,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_4_to_n_2_5",
+        "from": "n_2_4",
+        "to": "n_2_5",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_5_to_n_2_4",
+        "from": "n_2_5",
+        "to": "n_2_4",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.02,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_4_to_n_4_4",
+        "from": "n_3_4",
+        "to": "n_4_4",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.02,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_4_to_n_3_4",
+        "from": "n_4_4",
+        "to": "n_3_4",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_4_to_n_3_5",
+        "from": "n_3_4",
+        "to": "n_3_5",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_5_to_n_3_4",
+        "from": "n_3_5",
+        "to": "n_3_4",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_4_to_n_5_4",
+        "from": "n_4_4",
+        "to": "n_5_4",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.68,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_4_to_n_4_4",
+        "from": "n_5_4",
+        "to": "n_4_4",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.43,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_4_to_n_4_5",
+        "from": "n_4_4",
+        "to": "n_4_5",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_5_to_n_4_4",
+        "from": "n_4_5",
+        "to": "n_4_4",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_4_to_n_6_4",
+        "from": "n_5_4",
+        "to": "n_6_4",
+        "distanceKm": 0.9,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_4_to_n_5_4",
+        "from": "n_6_4",
+        "to": "n_5_4",
+        "distanceKm": 0.9,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 2.34,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_4_to_n_5_5",
+        "from": "n_5_4",
+        "to": "n_5_5",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_5_to_n_5_4",
+        "from": "n_5_5",
+        "to": "n_5_4",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_4_to_n_7_4",
+        "from": "n_6_4",
+        "to": "n_7_4",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.48,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_4_to_n_6_4",
+        "from": "n_7_4",
+        "to": "n_6_4",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.14,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_4_to_n_6_5",
+        "from": "n_6_4",
+        "to": "n_6_5",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_5_to_n_6_4",
+        "from": "n_6_5",
+        "to": "n_6_4",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_4_to_n_8_4",
+        "from": "n_7_4",
+        "to": "n_8_4",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_4_to_n_7_4",
+        "from": "n_8_4",
+        "to": "n_7_4",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_4_to_n_7_5",
+        "from": "n_7_4",
+        "to": "n_7_5",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.6,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_5_to_n_7_4",
+        "from": "n_7_5",
+        "to": "n_7_4",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_4_to_n_9_4",
+        "from": "n_8_4",
+        "to": "n_9_4",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_4_to_n_8_4",
+        "from": "n_9_4",
+        "to": "n_8_4",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_4_to_n_8_5",
+        "from": "n_8_4",
+        "to": "n_8_5",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_5_to_n_8_4",
+        "from": "n_8_5",
+        "to": "n_8_4",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_4_to_n_9_5",
+        "from": "n_9_4",
+        "to": "n_9_5",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_5_to_n_9_4",
+        "from": "n_9_5",
+        "to": "n_9_4",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_5_to_n_1_5",
+        "from": "n_0_5",
+        "to": "n_1_5",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_5_to_n_0_5",
+        "from": "n_1_5",
+        "to": "n_0_5",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_5_to_n_0_6",
+        "from": "n_0_5",
+        "to": "n_0_6",
+        "distanceKm": 1.14,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.14,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_6_to_n_0_5",
+        "from": "n_0_6",
+        "to": "n_0_5",
+        "distanceKm": 1.14,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.45,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_5_to_n_2_5",
+        "from": "n_1_5",
+        "to": "n_2_5",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_5_to_n_1_5",
+        "from": "n_2_5",
+        "to": "n_1_5",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.49,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_5_to_n_1_6",
+        "from": "n_1_5",
+        "to": "n_1_6",
+        "distanceKm": 1.05,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.02,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_6_to_n_1_5",
+        "from": "n_1_6",
+        "to": "n_1_5",
+        "distanceKm": 1.05,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.36,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_5_to_n_3_5",
+        "from": "n_2_5",
+        "to": "n_3_5",
+        "distanceKm": 0.95,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_5_to_n_2_5",
+        "from": "n_3_5",
+        "to": "n_2_5",
+        "distanceKm": 0.95,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.6,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_5_to_n_2_6",
+        "from": "n_2_5",
+        "to": "n_2_6",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_6_to_n_2_5",
+        "from": "n_2_6",
+        "to": "n_2_5",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_5_to_n_4_5",
+        "from": "n_3_5",
+        "to": "n_4_5",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.64,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_5_to_n_3_5",
+        "from": "n_4_5",
+        "to": "n_3_5",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_5_to_n_3_6",
+        "from": "n_3_5",
+        "to": "n_3_6",
+        "distanceKm": 1.07,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_6_to_n_3_5",
+        "from": "n_3_6",
+        "to": "n_3_5",
+        "distanceKm": 1.07,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_5_to_n_5_5",
+        "from": "n_4_5",
+        "to": "n_5_5",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.6,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_5_to_n_4_5",
+        "from": "n_5_5",
+        "to": "n_4_5",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_5_to_n_4_6",
+        "from": "n_4_5",
+        "to": "n_4_6",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_6_to_n_4_5",
+        "from": "n_4_6",
+        "to": "n_4_5",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_5_to_n_6_5",
+        "from": "n_5_5",
+        "to": "n_6_5",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_5_to_n_5_5",
+        "from": "n_6_5",
+        "to": "n_5_5",
+        "distanceKm": 1.03,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.57,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_5_to_n_5_6",
+        "from": "n_5_5",
+        "to": "n_5_6",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_6_to_n_5_5",
+        "from": "n_5_6",
+        "to": "n_5_5",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.46,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_5_to_n_7_5",
+        "from": "n_6_5",
+        "to": "n_7_5",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.09,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_5_to_n_6_5",
+        "from": "n_7_5",
+        "to": "n_6_5",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_5_to_n_6_6",
+        "from": "n_6_5",
+        "to": "n_6_6",
+        "distanceKm": 1,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_6_to_n_6_5",
+        "from": "n_6_6",
+        "to": "n_6_5",
+        "distanceKm": 1,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 2.29,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_5_to_n_8_5",
+        "from": "n_7_5",
+        "to": "n_8_5",
+        "distanceKm": 0.9,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.4,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_5_to_n_7_5",
+        "from": "n_8_5",
+        "to": "n_7_5",
+        "distanceKm": 0.9,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.52,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_5_to_n_7_6",
+        "from": "n_7_5",
+        "to": "n_7_6",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_6_to_n_7_5",
+        "from": "n_7_6",
+        "to": "n_7_5",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_5_to_n_9_5",
+        "from": "n_8_5",
+        "to": "n_9_5",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.02,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_5_to_n_8_5",
+        "from": "n_9_5",
+        "to": "n_8_5",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.14,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_5_to_n_8_6",
+        "from": "n_8_5",
+        "to": "n_8_6",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_6_to_n_8_5",
+        "from": "n_8_6",
+        "to": "n_8_5",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.44,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_5_to_n_9_6",
+        "from": "n_9_5",
+        "to": "n_9_6",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_6_to_n_9_5",
+        "from": "n_9_6",
+        "to": "n_9_5",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_6_to_n_1_6",
+        "from": "n_0_6",
+        "to": "n_1_6",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.53,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_6_to_n_0_6",
+        "from": "n_1_6",
+        "to": "n_0_6",
+        "distanceKm": 0.97,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 2.18,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_6_to_n_0_7",
+        "from": "n_0_6",
+        "to": "n_0_7",
+        "distanceKm": 0.93,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_7_to_n_0_6",
+        "from": "n_0_7",
+        "to": "n_0_6",
+        "distanceKm": 0.93,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_6_to_n_2_6",
+        "from": "n_1_6",
+        "to": "n_2_6",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_6_to_n_1_6",
+        "from": "n_2_6",
+        "to": "n_1_6",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 2.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_6_to_n_1_7",
+        "from": "n_1_6",
+        "to": "n_1_7",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_7_to_n_1_6",
+        "from": "n_1_7",
+        "to": "n_1_6",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.51,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_6_to_n_3_6",
+        "from": "n_2_6",
+        "to": "n_3_6",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_6_to_n_2_6",
+        "from": "n_3_6",
+        "to": "n_2_6",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 2.23,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_6_to_n_2_7",
+        "from": "n_2_6",
+        "to": "n_2_7",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_7_to_n_2_6",
+        "from": "n_2_7",
+        "to": "n_2_6",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.15,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_6_to_n_4_6",
+        "from": "n_3_6",
+        "to": "n_4_6",
+        "distanceKm": 1.07,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_6_to_n_3_6",
+        "from": "n_4_6",
+        "to": "n_3_6",
+        "distanceKm": 1.07,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 2.34,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_6_to_n_3_7",
+        "from": "n_3_6",
+        "to": "n_3_7",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_7_to_n_3_6",
+        "from": "n_3_7",
+        "to": "n_3_6",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_6_to_n_5_6",
+        "from": "n_4_6",
+        "to": "n_5_6",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.96,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_6_to_n_4_6",
+        "from": "n_5_6",
+        "to": "n_4_6",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 2.36,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_6_to_n_4_7",
+        "from": "n_4_6",
+        "to": "n_4_7",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_7_to_n_4_6",
+        "from": "n_4_7",
+        "to": "n_4_6",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_6_to_n_6_6",
+        "from": "n_5_6",
+        "to": "n_6_6",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.52,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_6_to_n_5_6",
+        "from": "n_6_6",
+        "to": "n_5_6",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 2.21,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_6_to_n_5_7",
+        "from": "n_5_6",
+        "to": "n_5_7",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.57,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_7_to_n_5_6",
+        "from": "n_5_7",
+        "to": "n_5_6",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.68,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_6_to_n_7_6",
+        "from": "n_6_6",
+        "to": "n_7_6",
+        "distanceKm": 1.06,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_6_to_n_6_6",
+        "from": "n_7_6",
+        "to": "n_6_6",
+        "distanceKm": 1.06,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.09,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_6_to_n_6_7",
+        "from": "n_6_6",
+        "to": "n_6_7",
+        "distanceKm": 1.04,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.48,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_7_to_n_6_6",
+        "from": "n_6_7",
+        "to": "n_6_6",
+        "distanceKm": 1.04,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_6_to_n_8_6",
+        "from": "n_7_6",
+        "to": "n_8_6",
+        "distanceKm": 1.01,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.95,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_6_to_n_7_6",
+        "from": "n_8_6",
+        "to": "n_7_6",
+        "distanceKm": 1.01,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_6_to_n_7_7",
+        "from": "n_7_6",
+        "to": "n_7_7",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_7_to_n_7_6",
+        "from": "n_7_7",
+        "to": "n_7_6",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.67,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_6_to_n_9_6",
+        "from": "n_8_6",
+        "to": "n_9_6",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_6_to_n_8_6",
+        "from": "n_9_6",
+        "to": "n_8_6",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_6_to_n_8_7",
+        "from": "n_8_6",
+        "to": "n_8_7",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_7_to_n_8_6",
+        "from": "n_8_7",
+        "to": "n_8_6",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.09,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_6_to_n_9_7",
+        "from": "n_9_6",
+        "to": "n_9_7",
+        "distanceKm": 1.07,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_7_to_n_9_6",
+        "from": "n_9_7",
+        "to": "n_9_6",
+        "distanceKm": 1.07,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_7_to_n_1_7",
+        "from": "n_0_7",
+        "to": "n_1_7",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.51,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_7_to_n_0_7",
+        "from": "n_1_7",
+        "to": "n_0_7",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_7_to_n_0_8",
+        "from": "n_0_7",
+        "to": "n_0_8",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_8_to_n_0_7",
+        "from": "n_0_8",
+        "to": "n_0_7",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_7_to_n_2_7",
+        "from": "n_1_7",
+        "to": "n_2_7",
+        "distanceKm": 1.04,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.67,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_7_to_n_1_7",
+        "from": "n_2_7",
+        "to": "n_1_7",
+        "distanceKm": 1.04,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_7_to_n_1_8",
+        "from": "n_1_7",
+        "to": "n_1_8",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_8_to_n_1_7",
+        "from": "n_1_8",
+        "to": "n_1_7",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_7_to_n_3_7",
+        "from": "n_2_7",
+        "to": "n_3_7",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_7_to_n_2_7",
+        "from": "n_3_7",
+        "to": "n_2_7",
+        "distanceKm": 1.02,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_7_to_n_2_8",
+        "from": "n_2_7",
+        "to": "n_2_8",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.14,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_8_to_n_2_7",
+        "from": "n_2_8",
+        "to": "n_2_7",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.02,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_7_to_n_4_7",
+        "from": "n_3_7",
+        "to": "n_4_7",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_7_to_n_3_7",
+        "from": "n_4_7",
+        "to": "n_3_7",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2.2,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_7_to_n_3_8",
+        "from": "n_3_7",
+        "to": "n_3_8",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.14,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_8_to_n_3_7",
+        "from": "n_3_8",
+        "to": "n_3_7",
+        "distanceKm": 0.91,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_7_to_n_5_7",
+        "from": "n_4_7",
+        "to": "n_5_7",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.02,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_7_to_n_4_7",
+        "from": "n_5_7",
+        "to": "n_4_7",
+        "distanceKm": 1.09,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_7_to_n_4_8",
+        "from": "n_4_7",
+        "to": "n_4_8",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_8_to_n_4_7",
+        "from": "n_4_8",
+        "to": "n_4_7",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.59,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_7_to_n_6_7",
+        "from": "n_5_7",
+        "to": "n_6_7",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_7_to_n_5_7",
+        "from": "n_6_7",
+        "to": "n_5_7",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_7_to_n_5_8",
+        "from": "n_5_7",
+        "to": "n_5_8",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_8_to_n_5_7",
+        "from": "n_5_8",
+        "to": "n_5_7",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.65,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_7_to_n_7_7",
+        "from": "n_6_7",
+        "to": "n_7_7",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.62,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_7_to_n_6_7",
+        "from": "n_7_7",
+        "to": "n_6_7",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.36,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_7_to_n_6_8",
+        "from": "n_6_7",
+        "to": "n_6_8",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.14,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_8_to_n_6_7",
+        "from": "n_6_8",
+        "to": "n_6_7",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_7_to_n_8_7",
+        "from": "n_7_7",
+        "to": "n_8_7",
+        "distanceKm": 1,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_7_to_n_7_7",
+        "from": "n_8_7",
+        "to": "n_7_7",
+        "distanceKm": 1,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.43,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_7_to_n_7_8",
+        "from": "n_7_7",
+        "to": "n_7_8",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_8_to_n_7_7",
+        "from": "n_7_8",
+        "to": "n_7_7",
+        "distanceKm": 0.98,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.36,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_7_to_n_9_7",
+        "from": "n_8_7",
+        "to": "n_9_7",
+        "distanceKm": 1.15,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_7_to_n_8_7",
+        "from": "n_9_7",
+        "to": "n_8_7",
+        "distanceKm": 1.15,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.02,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_7_to_n_8_8",
+        "from": "n_8_7",
+        "to": "n_8_8",
+        "distanceKm": 1.01,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.14,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_8_to_n_8_7",
+        "from": "n_8_8",
+        "to": "n_8_7",
+        "distanceKm": 1.01,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.38,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_7_to_n_9_8",
+        "from": "n_9_7",
+        "to": "n_9_8",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_8_to_n_9_7",
+        "from": "n_9_8",
+        "to": "n_9_7",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_8_to_n_1_8",
+        "from": "n_0_8",
+        "to": "n_1_8",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_8_to_n_0_8",
+        "from": "n_1_8",
+        "to": "n_0_8",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_8_to_n_0_9",
+        "from": "n_0_8",
+        "to": "n_0_9",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_9_to_n_0_8",
+        "from": "n_0_9",
+        "to": "n_0_8",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_8_to_n_2_8",
+        "from": "n_1_8",
+        "to": "n_2_8",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_8_to_n_1_8",
+        "from": "n_2_8",
+        "to": "n_1_8",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_8_to_n_1_9",
+        "from": "n_1_8",
+        "to": "n_1_9",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.02,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_9_to_n_1_8",
+        "from": "n_1_9",
+        "to": "n_1_8",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.67,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_8_to_n_3_8",
+        "from": "n_2_8",
+        "to": "n_3_8",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_8_to_n_2_8",
+        "from": "n_3_8",
+        "to": "n_2_8",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_8_to_n_2_9",
+        "from": "n_2_8",
+        "to": "n_2_9",
+        "distanceKm": 1.01,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.7,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_9_to_n_2_8",
+        "from": "n_2_9",
+        "to": "n_2_8",
+        "distanceKm": 1.01,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.54,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_8_to_n_4_8",
+        "from": "n_3_8",
+        "to": "n_4_8",
+        "distanceKm": 0.9,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.55,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_8_to_n_3_8",
+        "from": "n_4_8",
+        "to": "n_3_8",
+        "distanceKm": 0.9,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.39,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_8_to_n_3_9",
+        "from": "n_3_8",
+        "to": "n_3_9",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_9_to_n_3_8",
+        "from": "n_3_9",
+        "to": "n_3_8",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.15,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_8_to_n_5_8",
+        "from": "n_4_8",
+        "to": "n_5_8",
+        "distanceKm": 1.07,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_8_to_n_4_8",
+        "from": "n_5_8",
+        "to": "n_4_8",
+        "distanceKm": 1.07,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_8_to_n_4_9",
+        "from": "n_4_8",
+        "to": "n_4_9",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_9_to_n_4_8",
+        "from": "n_4_9",
+        "to": "n_4_8",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_8_to_n_6_8",
+        "from": "n_5_8",
+        "to": "n_6_8",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.14,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_8_to_n_5_8",
+        "from": "n_6_8",
+        "to": "n_5_8",
+        "distanceKm": 0.96,
+        "baseTravelMinutes": 1.8,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_8_to_n_5_9",
+        "from": "n_5_8",
+        "to": "n_5_9",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 2.22,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_9_to_n_5_8",
+        "from": "n_5_9",
+        "to": "n_5_8",
+        "distanceKm": 1.13,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.09,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_8_to_n_7_8",
+        "from": "n_6_8",
+        "to": "n_7_8",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_8_to_n_6_8",
+        "from": "n_7_8",
+        "to": "n_6_8",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.11,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_8_to_n_6_9",
+        "from": "n_6_8",
+        "to": "n_6_9",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.09,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_9_to_n_6_8",
+        "from": "n_6_9",
+        "to": "n_6_8",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_8_to_n_8_8",
+        "from": "n_7_8",
+        "to": "n_8_8",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_8_to_n_7_8",
+        "from": "n_8_8",
+        "to": "n_7_8",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_8_to_n_7_9",
+        "from": "n_7_8",
+        "to": "n_7_9",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.55,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_9_to_n_7_8",
+        "from": "n_7_9",
+        "to": "n_7_8",
+        "distanceKm": 0.94,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_8_to_n_9_8",
+        "from": "n_8_8",
+        "to": "n_9_8",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_8_to_n_8_8",
+        "from": "n_9_8",
+        "to": "n_8_8",
+        "distanceKm": 0.99,
+        "baseTravelMinutes": 2.1,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_8_to_n_8_9",
+        "from": "n_8_8",
+        "to": "n_8_9",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.13,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_9_to_n_8_8",
+        "from": "n_8_9",
+        "to": "n_8_8",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_8_to_n_9_9",
+        "from": "n_9_8",
+        "to": "n_9_9",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_9_to_n_9_8",
+        "from": "n_9_9",
+        "to": "n_9_8",
+        "distanceKm": 1.11,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_0_9_to_n_1_9",
+        "from": "n_0_9",
+        "to": "n_1_9",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 2.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_9_to_n_0_9",
+        "from": "n_1_9",
+        "to": "n_0_9",
+        "distanceKm": 1.12,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 2.21,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_1_9_to_n_2_9",
+        "from": "n_1_9",
+        "to": "n_2_9",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.12,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_9_to_n_1_9",
+        "from": "n_2_9",
+        "to": "n_1_9",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_2_9_to_n_3_9",
+        "from": "n_2_9",
+        "to": "n_3_9",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_9_to_n_2_9",
+        "from": "n_3_9",
+        "to": "n_2_9",
+        "distanceKm": 1.08,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_3_9_to_n_4_9",
+        "from": "n_3_9",
+        "to": "n_4_9",
+        "distanceKm": 0.93,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.08,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_9_to_n_3_9",
+        "from": "n_4_9",
+        "to": "n_3_9",
+        "distanceKm": 0.93,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.07,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_4_9_to_n_5_9",
+        "from": "n_4_9",
+        "to": "n_5_9",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 2.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_9_to_n_4_9",
+        "from": "n_5_9",
+        "to": "n_4_9",
+        "distanceKm": 0.92,
+        "baseTravelMinutes": 2,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_5_9_to_n_6_9",
+        "from": "n_5_9",
+        "to": "n_6_9",
+        "distanceKm": 1.05,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_9_to_n_5_9",
+        "from": "n_6_9",
+        "to": "n_5_9",
+        "distanceKm": 1.05,
+        "baseTravelMinutes": 1.7,
+        "congestionMultiplier": 1.01,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_6_9_to_n_7_9",
+        "from": "n_6_9",
+        "to": "n_7_9",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1.61,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_9_to_n_6_9",
+        "from": "n_7_9",
+        "to": "n_6_9",
+        "distanceKm": 1.1,
+        "baseTravelMinutes": 1.9,
+        "congestionMultiplier": 1,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_7_9_to_n_8_9",
+        "from": "n_7_9",
+        "to": "n_8_9",
+        "distanceKm": 1.05,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.06,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_9_to_n_7_9",
+        "from": "n_8_9",
+        "to": "n_7_9",
+        "distanceKm": 1.05,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.04,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_8_9_to_n_9_9",
+        "from": "n_8_9",
+        "to": "n_9_9",
+        "distanceKm": 1.04,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.05,
+        "isBlocked": false
+      },
+      {
+        "id": "e_n_9_9_to_n_8_9",
+        "from": "n_9_9",
+        "to": "n_8_9",
+        "distanceKm": 1.04,
+        "baseTravelMinutes": 1.6,
+        "congestionMultiplier": 1.03,
+        "isBlocked": false
+      }
+    ],
+    "customers": [
+      {
+        "id": "C01",
+        "nodeId": "n_9_7",
+        "demand": 5,
+        "status": "pending"
+      },
+      {
+        "id": "C02",
+        "nodeId": "n_8_5",
+        "demand": 6,
+        "status": "pending"
+      },
+      {
+        "id": "C03",
+        "nodeId": "n_9_5",
+        "demand": 5,
+        "status": "pending"
+      },
+      {
+        "id": "C04",
+        "nodeId": "n_5_9",
+        "demand": 4,
+        "status": "pending"
+      },
+      {
+        "id": "C05",
+        "nodeId": "n_1_5",
+        "demand": 3,
+        "status": "pending"
+      },
+      {
+        "id": "C06",
+        "nodeId": "n_3_5",
+        "demand": 1,
+        "status": "pending"
+      },
+      {
+        "id": "C07",
+        "nodeId": "n_7_1",
+        "demand": 2,
+        "status": "pending"
+      },
+      {
+        "id": "C08",
+        "nodeId": "n_4_5",
+        "demand": 2,
+        "status": "pending"
+      },
+      {
+        "id": "C09",
+        "nodeId": "n_8_4",
+        "demand": 2,
+        "status": "pending"
+      },
+      {
+        "id": "C10",
+        "nodeId": "n_2_3",
+        "demand": 3,
+        "status": "pending"
+      },
+      {
+        "id": "C11",
+        "nodeId": "n_9_9",
+        "demand": 3,
+        "status": "pending"
+      },
+      {
+        "id": "C12",
+        "nodeId": "n_2_0",
+        "demand": 3,
+        "status": "pending"
+      },
+      {
+        "id": "C13",
+        "nodeId": "n_5_3",
+        "demand": 3,
+        "status": "pending"
+      },
+      {
+        "id": "C14",
+        "nodeId": "n_6_3",
+        "demand": 1,
+        "status": "pending"
+      },
+      {
+        "id": "C15",
+        "nodeId": "n_3_7",
+        "demand": 4,
+        "status": "pending"
+      },
+      {
+        "id": "C16",
+        "nodeId": "n_0_4",
+        "demand": 1,
+        "status": "pending"
+      },
+      {
+        "id": "C17",
+        "nodeId": "n_4_0",
+        "demand": 1,
+        "status": "pending"
+      },
+      {
+        "id": "C18",
+        "nodeId": "n_5_6",
+        "demand": 5,
+        "status": "pending"
+      },
+      {
+        "id": "C19",
+        "nodeId": "n_8_0",
+        "demand": 3,
+        "status": "pending"
+      },
+      {
+        "id": "C20",
+        "nodeId": "n_7_9",
+        "demand": 5,
+        "status": "pending"
+      },
+      {
+        "id": "C21",
+        "nodeId": "n_1_4",
+        "demand": 3,
+        "status": "pending"
+      },
+      {
+        "id": "C22",
+        "nodeId": "n_6_4",
+        "demand": 2,
+        "status": "pending"
+      },
+      {
+        "id": "C23",
+        "nodeId": "n_7_6",
+        "demand": 1,
+        "status": "pending"
+      },
+      {
+        "id": "C24",
+        "nodeId": "n_3_2",
+        "demand": 5,
+        "status": "pending"
+      },
+      {
+        "id": "C25",
+        "nodeId": "n_0_8",
+        "demand": 5,
+        "status": "pending"
+      }
+    ],
+    "vehicles": [
+      {
+        "id": "V1",
+        "label": "Vehicle V1",
+        "capacity": 30,
+        "usedCapacity": 0,
+        "currentNodeId": "n_3_4",
+        "assignedCustomerIds": [],
+        "completedCustomerIds": [],
+        "color": "#2563eb",
+        "status": "awaiting_optimization"
+      },
+      {
+        "id": "V2",
+        "label": "Vehicle V2",
+        "capacity": 30,
+        "usedCapacity": 0,
+        "currentNodeId": "n_3_4",
+        "assignedCustomerIds": [],
+        "completedCustomerIds": [],
+        "color": "#9333ea",
+        "status": "awaiting_optimization"
+      },
+      {
+        "id": "V3",
+        "label": "Vehicle V3",
+        "capacity": 30,
+        "usedCapacity": 0,
+        "currentNodeId": "n_3_4",
+        "assignedCustomerIds": [],
+        "completedCustomerIds": [],
+        "color": "#0d9488",
+        "status": "awaiting_optimization"
+      }
+    ],
+    "incidents": []
+  },
+  "routePlan": {
+    "algorithm": "greedy",
+    "scenarioId": "scenario_normal_26137",
+    "seed": 26137,
+    "depotNodeId": "n_3_4",
+    "vehicleRoutes": [
+      {
+        "vehicleId": "V1",
+        "vehicleLabel": "Vehicle V1",
+        "customerIds": [
+          "C06",
+          "C08",
+          "C18",
+          "C23",
+          "C02",
+          "C03",
+          "C01",
+          "C11",
+          "C09"
+        ],
+        "stopNodeIds": [
+          "n_3_4",
+          "n_3_5",
+          "n_4_5",
+          "n_5_6",
+          "n_7_6",
+          "n_8_5",
+          "n_9_5",
+          "n_9_7",
+          "n_9_9",
+          "n_8_4",
+          "n_3_4"
+        ],
+        "fullPathNodeIds": [
+          "n_3_4",
+          "n_3_5",
+          "n_4_5",
+          "n_5_5",
+          "n_5_6",
+          "n_6_6",
+          "n_7_6",
+          "n_7_5",
+          "n_8_5",
+          "n_9_5",
+          "n_9_6",
+          "n_9_7",
+          "n_9_8",
+          "n_9_9",
+          "n_9_8",
+          "n_9_7",
+          "n_9_6",
+          "n_9_5",
+          "n_8_5",
+          "n_8_4",
+          "n_7_4",
+          "n_6_4",
+          "n_5_4",
+          "n_4_4",
+          "n_3_4"
+        ],
+        "fullPathEdgeIds": [
+          "e_n_3_4_to_n_3_5",
+          "e_n_3_5_to_n_4_5",
+          "e_n_4_5_to_n_5_5",
+          "e_n_5_5_to_n_5_6",
+          "e_n_5_6_to_n_6_6",
+          "e_n_6_6_to_n_7_6",
+          "e_n_7_6_to_n_7_5",
+          "e_n_7_5_to_n_8_5",
+          "e_n_8_5_to_n_9_5",
+          "e_n_9_5_to_n_9_6",
+          "e_n_9_6_to_n_9_7",
+          "e_n_9_7_to_n_9_8",
+          "e_n_9_8_to_n_9_9",
+          "e_n_9_9_to_n_9_8",
+          "e_n_9_8_to_n_9_7",
+          "e_n_9_7_to_n_9_6",
+          "e_n_9_6_to_n_9_5",
+          "e_n_9_5_to_n_8_5",
+          "e_n_8_5_to_n_8_4",
+          "e_n_8_4_to_n_7_4",
+          "e_n_7_4_to_n_6_4",
+          "e_n_6_4_to_n_5_4",
+          "e_n_5_4_to_n_4_4",
+          "e_n_4_4_to_n_3_4"
+        ],
+        "travelMinutes": 53.77600000000001,
+        "distanceKm": 24.74,
+        "congestionPenalty": 9.975999999999997,
+        "usedCapacity": 30,
+        "remainingCapacity": 0,
+        "startsAtDepot": true,
+        "endsAtDepot": true,
+        "reachable": true,
+        "feasible": true,
+        "warnings": [],
+        "startNodeId": "n_3_4",
+        "endNodeId": "n_3_4",
+        "completedCustomerIds": [],
+        "pendingCustomerIds": [
+          "C06",
+          "C08",
+          "C18",
+          "C23",
+          "C02",
+          "C03",
+          "C01",
+          "C11",
+          "C09"
+        ],
+        "isDynamicReroute": false
+      },
+      {
+        "vehicleId": "V2",
+        "vehicleLabel": "Vehicle V2",
+        "customerIds": [
+          "C10",
+          "C24",
+          "C13",
+          "C14",
+          "C22",
+          "C07",
+          "C19",
+          "C17",
+          "C12",
+          "C21",
+          "C05",
+          "C16"
+        ],
+        "stopNodeIds": [
+          "n_3_4",
+          "n_2_3",
+          "n_3_2",
+          "n_5_3",
+          "n_6_3",
+          "n_6_4",
+          "n_7_1",
+          "n_8_0",
+          "n_4_0",
+          "n_2_0",
+          "n_1_4",
+          "n_1_5",
+          "n_0_4",
+          "n_3_4"
+        ],
+        "fullPathNodeIds": [
+          "n_3_4",
+          "n_3_3",
+          "n_2_3",
+          "n_3_3",
+          "n_3_2",
+          "n_4_2",
+          "n_5_2",
+          "n_5_3",
+          "n_6_3",
+          "n_6_4",
+          "n_6_3",
+          "n_6_2",
+          "n_7_2",
+          "n_7_1",
+          "n_8_1",
+          "n_8_0",
+          "n_7_0",
+          "n_6_0",
+          "n_5_0",
+          "n_4_0",
+          "n_3_0",
+          "n_2_0",
+          "n_2_1",
+          "n_2_2",
+          "n_2_3",
+          "n_2_4",
+          "n_1_4",
+          "n_1_5",
+          "n_0_5",
+          "n_0_4",
+          "n_1_4",
+          "n_2_4",
+          "n_3_4"
+        ],
+        "fullPathEdgeIds": [
+          "e_n_3_4_to_n_3_3",
+          "e_n_3_3_to_n_2_3",
+          "e_n_2_3_to_n_3_3",
+          "e_n_3_3_to_n_3_2",
+          "e_n_3_2_to_n_4_2",
+          "e_n_4_2_to_n_5_2",
+          "e_n_5_2_to_n_5_3",
+          "e_n_5_3_to_n_6_3",
+          "e_n_6_3_to_n_6_4",
+          "e_n_6_4_to_n_6_3",
+          "e_n_6_3_to_n_6_2",
+          "e_n_6_2_to_n_7_2",
+          "e_n_7_2_to_n_7_1",
+          "e_n_7_1_to_n_8_1",
+          "e_n_8_1_to_n_8_0",
+          "e_n_8_0_to_n_7_0",
+          "e_n_7_0_to_n_6_0",
+          "e_n_6_0_to_n_5_0",
+          "e_n_5_0_to_n_4_0",
+          "e_n_4_0_to_n_3_0",
+          "e_n_3_0_to_n_2_0",
+          "e_n_2_0_to_n_2_1",
+          "e_n_2_1_to_n_2_2",
+          "e_n_2_2_to_n_2_3",
+          "e_n_2_3_to_n_2_4",
+          "e_n_2_4_to_n_1_4",
+          "e_n_1_4_to_n_1_5",
+          "e_n_1_5_to_n_0_5",
+          "e_n_0_5_to_n_0_4",
+          "e_n_0_4_to_n_1_4",
+          "e_n_1_4_to_n_2_4",
+          "e_n_2_4_to_n_3_4"
+        ],
+        "travelMinutes": 68.968,
+        "distanceKm": 33.73,
+        "congestionPenalty": 8.468,
+        "usedCapacity": 30,
+        "remainingCapacity": 0,
+        "startsAtDepot": true,
+        "endsAtDepot": true,
+        "reachable": true,
+        "feasible": true,
+        "warnings": [],
+        "startNodeId": "n_3_4",
+        "endNodeId": "n_3_4",
+        "completedCustomerIds": [],
+        "pendingCustomerIds": [
+          "C10",
+          "C24",
+          "C13",
+          "C14",
+          "C22",
+          "C07",
+          "C19",
+          "C17",
+          "C12",
+          "C21",
+          "C05",
+          "C16"
+        ],
+        "isDynamicReroute": false
+      },
+      {
+        "vehicleId": "V3",
+        "vehicleLabel": "Vehicle V3",
+        "customerIds": [
+          "C15",
+          "C25",
+          "C04",
+          "C20"
+        ],
+        "stopNodeIds": [
+          "n_3_4",
+          "n_3_7",
+          "n_0_8",
+          "n_5_9",
+          "n_7_9",
+          "n_3_4"
+        ],
+        "fullPathNodeIds": [
+          "n_3_4",
+          "n_3_5",
+          "n_3_6",
+          "n_3_7",
+          "n_2_7",
+          "n_1_7",
+          "n_1_8",
+          "n_0_8",
+          "n_1_8",
+          "n_1_9",
+          "n_2_9",
+          "n_3_9",
+          "n_4_9",
+          "n_5_9",
+          "n_6_9",
+          "n_7_9",
+          "n_6_9",
+          "n_6_8",
+          "n_6_7",
+          "n_5_7",
+          "n_4_7",
+          "n_4_6",
+          "n_4_5",
+          "n_3_5",
+          "n_3_4"
+        ],
+        "fullPathEdgeIds": [
+          "e_n_3_4_to_n_3_5",
+          "e_n_3_5_to_n_3_6",
+          "e_n_3_6_to_n_3_7",
+          "e_n_3_7_to_n_2_7",
+          "e_n_2_7_to_n_1_7",
+          "e_n_1_7_to_n_1_8",
+          "e_n_1_8_to_n_0_8",
+          "e_n_0_8_to_n_1_8",
+          "e_n_1_8_to_n_1_9",
+          "e_n_1_9_to_n_2_9",
+          "e_n_2_9_to_n_3_9",
+          "e_n_3_9_to_n_4_9",
+          "e_n_4_9_to_n_5_9",
+          "e_n_5_9_to_n_6_9",
+          "e_n_6_9_to_n_7_9",
+          "e_n_7_9_to_n_6_9",
+          "e_n_6_9_to_n_6_8",
+          "e_n_6_8_to_n_6_7",
+          "e_n_6_7_to_n_5_7",
+          "e_n_5_7_to_n_4_7",
+          "e_n_4_7_to_n_4_6",
+          "e_n_4_6_to_n_4_5",
+          "e_n_4_5_to_n_3_5",
+          "e_n_3_5_to_n_3_4"
+        ],
+        "travelMinutes": 49.64999999999999,
+        "distanceKm": 24.990000000000002,
+        "congestionPenalty": 5.750000000000002,
+        "usedCapacity": 18,
+        "remainingCapacity": 12,
+        "startsAtDepot": true,
+        "endsAtDepot": true,
+        "reachable": true,
+        "feasible": true,
+        "warnings": [],
+        "startNodeId": "n_3_4",
+        "endNodeId": "n_3_4",
+        "completedCustomerIds": [],
+        "pendingCustomerIds": [
+          "C15",
+          "C25",
+          "C04",
+          "C20"
+        ],
+        "isDynamicReroute": false
+      }
+    ],
+    "totalTravelMinutes": 172.394,
+    "totalDistanceKm": 83.46000000000001,
+    "congestionPenalty": 24.193999999999996,
+    "routingScore": 120.5205,
+    "customersServed": 25,
+    "customerCount": 25,
+    "unservedCustomerIds": [],
+    "duplicateCustomerIds": [],
+    "capacityViolationVehicleIds": [],
+    "blockedEdgeViolationIds": [],
+    "unreachableVehicleIds": [],
+    "isFeasible": true,
+    "warnings": [],
+    "runtimeMs": 77.473,
+    "routingContext": null
+  },
+  "frontendEvaluation": {
+    "totalTravelMinutes": 172.394,
+    "totalDistanceKm": 83.46000000000001,
+    "totalCongestionPenalty": 24.193999999999996,
+    "routingScore": 120.5205,
+    "penaltyTotal": 0,
+    "customersAssigned": 25,
+    "customersUnserved": 0,
+    "unservedCustomerIds": [],
+    "duplicateCustomerIds": [],
+    "capacityViolationVehicleIds": [],
+    "blockedEdgeViolationIds": [],
+    "unreachableVehicleIds": [],
+    "pathContinuityViolationVehicleIds": [],
+    "feasible": true,
+    "warnings": []
+  }
+}

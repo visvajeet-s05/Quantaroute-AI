@@ -49,7 +49,7 @@ import { runQpsoUnitTests } from './utils/qpsoValidationTests';
 import { runReroutingUnitTests } from './utils/reroutingValidationTests';
 import { runExperimentUnitTests } from './utils/experimentValidationTests';
 import { runCapstonePresentationTests } from './utils/capstonePresentationValidationTests';
-import { ExperimentUnitTestResult, ExperimentHistory as ExperimentHistoryType } from './types/experiments';
+import { ExperimentUnitTestResult, ExperimentHistory as ExperimentHistoryType, ExperimentRecord, InitialRoutingExperimentRecord } from './types/experiments';
 import { CapstoneUnitTestResult } from './types/capstone';
 import { validateScenario } from './utils/scenarioValidation';
 import { ReroutingResultSummary } from './components/ReroutingResultSummary';
@@ -215,6 +215,46 @@ export default function App() {
     setIncidentEdges(null);
     setReroutingResult(null);
 
+    const record: InitialRoutingExperimentRecord = {
+      id: `rec-greedy-${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      experimentGroupId: `run-${Date.now()}`,
+      runType: 'initial_routing',
+      scenarioId: scenario.id || 'scenario-default',
+      scenarioName: scenario.name || 'Default Scenario',
+      scenarioSeed: scenario.seed,
+      trafficProfile: (scenario.name?.toLowerCase().includes('peak') ? 'peak' : scenario.name?.toLowerCase().includes('closure') ? 'road_closure_demo' : 'normal') as any,
+      algorithm: 'greedy',
+      algorithmLabel: 'Greedy Routing',
+      optimizerPreset: 'standard',
+      optimizerSeed: scenario.seed,
+      populationSize: null,
+      iterations: null,
+      candidateEvaluations: null,
+      runtimeMs: plan.runtimeMs,
+      totalTravelMinutes: plan.totalTravelMinutes,
+      totalDistanceKm: plan.totalDistanceKm,
+      congestionPenalty: plan.congestionPenalty,
+      routingScore: plan.routingScore,
+      customersAssigned: plan.customersServed,
+      customersUnserved: plan.customerCount - plan.customersServed,
+      customerCount: plan.customerCount,
+      vehiclesUsed: plan.vehicleRoutes.filter((r) => r.customerIds.length > 0 || r.fullPathNodeIds.length > 1).length,
+      vehicleCapacityTotal: scenario.vehicles.reduce((sum, v) => sum + v.capacity, 0),
+      capacityViolationCount: plan.capacityViolationVehicleIds.length,
+      duplicateCustomerCount: plan.duplicateCustomerIds.length,
+      blockedEdgeViolationCount: plan.blockedEdgeViolationIds.length,
+      unreachableVehicleCount: plan.unreachableVehicleIds.length,
+      feasible: plan.isFeasible,
+      warnings: [...plan.warnings],
+      convergenceHistory: null,
+      routePlan: plan,
+    };
+    const nextHist = [...experimentHistory, record];
+    setExperimentHistory(nextHist);
+    saveExperimentHistory(nextHist);
+    setSelectedExperimentRecord(record);
+
     triggerToast(
       `Greedy baseline completed: 3 vehicle routes serving ${plan.customersServed}/${plan.customerCount} customers (${plan.runtimeMs} ms).`
     );
@@ -238,6 +278,46 @@ export default function App() {
         setIncidentEdges(null);
         setReroutingResult(null);
         setIsOptimizingPso(false);
+
+        const record: InitialRoutingExperimentRecord = {
+          id: `rec-pso-${Date.now()}`,
+          timestamp: new Date().toISOString(),
+          experimentGroupId: `run-${Date.now()}`,
+          runType: 'initial_routing',
+          scenarioId: scenario.id || 'scenario-default',
+          scenarioName: scenario.name || 'Default Scenario',
+          scenarioSeed: scenario.seed,
+          trafficProfile: (scenario.name?.toLowerCase().includes('peak') ? 'peak' : scenario.name?.toLowerCase().includes('closure') ? 'road_closure_demo' : 'normal') as any,
+          algorithm: 'pso',
+          algorithmLabel: 'Classical PSO',
+          optimizerPreset: preset === 'Fast Re-route' ? 'fast' : preset === 'High Quality' ? 'highQuality' : 'balanced',
+          optimizerSeed: scenario.seed,
+          populationSize: 25,
+          iterations: 50,
+          candidateEvaluations: result.candidateEvaluations,
+          runtimeMs: result.runtimeMs,
+          totalTravelMinutes: result.bestPlan.totalTravelMinutes,
+          totalDistanceKm: result.bestPlan.totalDistanceKm,
+          congestionPenalty: result.bestPlan.congestionPenalty,
+          routingScore: result.bestPlan.routingScore,
+          customersAssigned: result.bestPlan.customersServed,
+          customersUnserved: result.bestPlan.customerCount - result.bestPlan.customersServed,
+          customerCount: result.bestPlan.customerCount,
+          vehiclesUsed: result.bestPlan.vehicleRoutes.filter((r) => r.customerIds.length > 0 || r.fullPathNodeIds.length > 1).length,
+          vehicleCapacityTotal: scenario.vehicles.reduce((sum, v) => sum + v.capacity, 0),
+          capacityViolationCount: result.bestPlan.capacityViolationVehicleIds.length,
+          duplicateCustomerCount: result.bestPlan.duplicateCustomerIds.length,
+          blockedEdgeViolationCount: result.bestPlan.blockedEdgeViolationIds.length,
+          unreachableVehicleCount: result.bestPlan.unreachableVehicleIds.length,
+          feasible: result.bestPlan.isFeasible,
+          warnings: [...result.bestPlan.warnings],
+          convergenceHistory: result.convergenceHistory,
+          routePlan: result.bestPlan,
+        };
+        const nextHist = [...experimentHistory, record];
+        setExperimentHistory(nextHist);
+        saveExperimentHistory(nextHist);
+        setSelectedExperimentRecord(record);
 
         triggerToast(
           `Classical PSO completed: Best score ${result.bestFitness.toFixed(1)} across ${result.candidateEvaluations.toLocaleString()} evaluations (${result.runtimeMs} ms).`
@@ -267,6 +347,46 @@ export default function App() {
         setIncidentEdges(null);
         setReroutingResult(null);
         setIsOptimizingQpso(false);
+
+        const record: InitialRoutingExperimentRecord = {
+          id: `rec-qpso-${Date.now()}`,
+          timestamp: new Date().toISOString(),
+          experimentGroupId: `run-${Date.now()}`,
+          runType: 'initial_routing',
+          scenarioId: scenario.id || 'scenario-default',
+          scenarioName: scenario.name || 'Default Scenario',
+          scenarioSeed: scenario.seed,
+          trafficProfile: (scenario.name?.toLowerCase().includes('peak') ? 'peak' : scenario.name?.toLowerCase().includes('closure') ? 'road_closure_demo' : 'normal') as any,
+          algorithm: 'qpso',
+          algorithmLabel: 'Quantum-Inspired PSO',
+          optimizerPreset: preset === 'Fast Re-route' ? 'fast' : preset === 'High Quality' ? 'highQuality' : 'balanced',
+          optimizerSeed: scenario.seed,
+          populationSize: 25,
+          iterations: 50,
+          candidateEvaluations: result.candidateEvaluations,
+          runtimeMs: result.runtimeMs,
+          totalTravelMinutes: result.bestPlan.totalTravelMinutes,
+          totalDistanceKm: result.bestPlan.totalDistanceKm,
+          congestionPenalty: result.bestPlan.congestionPenalty,
+          routingScore: result.bestPlan.routingScore,
+          customersAssigned: result.bestPlan.customersServed,
+          customersUnserved: result.bestPlan.customerCount - result.bestPlan.customersServed,
+          customerCount: result.bestPlan.customerCount,
+          vehiclesUsed: result.bestPlan.vehicleRoutes.filter((r) => r.customerIds.length > 0 || r.fullPathNodeIds.length > 1).length,
+          vehicleCapacityTotal: scenario.vehicles.reduce((sum, v) => sum + v.capacity, 0),
+          capacityViolationCount: result.bestPlan.capacityViolationVehicleIds.length,
+          duplicateCustomerCount: result.bestPlan.duplicateCustomerIds.length,
+          blockedEdgeViolationCount: result.bestPlan.blockedEdgeViolationIds.length,
+          unreachableVehicleCount: result.bestPlan.unreachableVehicleIds.length,
+          feasible: result.bestPlan.isFeasible,
+          warnings: [...result.bestPlan.warnings],
+          convergenceHistory: result.convergenceHistory,
+          routePlan: result.bestPlan,
+        };
+        const nextHist = [...experimentHistory, record];
+        setExperimentHistory(nextHist);
+        saveExperimentHistory(nextHist);
+        setSelectedExperimentRecord(record);
 
         triggerToast(
           `Quantum-Inspired PSO completed: Best score ${result.bestFitness.toFixed(1)} across ${result.candidateEvaluations.toLocaleString()} evaluations (${result.runtimeMs} ms).`

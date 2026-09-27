@@ -12,6 +12,8 @@ import {
   ParityExportValidationResult,
   canBuildParityExport,
 } from '../types/parity';
+
+export type { FrontendBackendParityExport, ParityExportValidationResult };
 import { Scenario } from '../types/domain';
 import { RoutePlan, VehicleRoute, RoutingContext, AlgorithmName, RoutingMode } from '../types/routing';
 
@@ -118,7 +120,10 @@ function validateObjectiveEquality(
  * Map frontend VehicleRoute to backend-compatible VehicleRoute
  * Field names are mapped only; values are preserved exactly
  */
-function mapVehicleRouteForExport(route: VehicleRoute): VehicleRoute {
+function mapVehicleRouteForExport(route: VehicleRoute, depotNodeId?: string): VehicleRoute {
+  const startNodeId = route.startNodeId || (route.fullPathNodeIds.length > 0 ? route.fullPathNodeIds[0] : (depotNodeId || ''));
+  const endNodeId = route.endNodeId || (route.fullPathNodeIds.length > 0 ? route.fullPathNodeIds[route.fullPathNodeIds.length - 1] : (depotNodeId || ''));
+
   return {
     vehicleId: route.vehicleId,
     vehicleLabel: route.vehicleLabel,
@@ -136,12 +141,11 @@ function mapVehicleRouteForExport(route: VehicleRoute): VehicleRoute {
     reachable: route.reachable,
     feasible: route.feasible,
     warnings: route.warnings,
-    // Optional fields for dynamic re-routing (included if present)
-    startNodeId: route.startNodeId,
-    endNodeId: route.endNodeId,
-    completedCustomerIds: route.completedCustomerIds,
-    pendingCustomerIds: route.pendingCustomerIds,
-    isDynamicReroute: route.isDynamicReroute,
+    startNodeId,
+    endNodeId,
+    completedCustomerIds: route.completedCustomerIds || [],
+    pendingCustomerIds: route.pendingCustomerIds || [...route.customerIds],
+    isDynamicReroute: route.isDynamicReroute || false,
     initialVehicleCurrentNodeId: route.initialVehicleCurrentNodeId,
   };
 }
@@ -206,7 +210,7 @@ export function buildParityExport(
   };
   
   // Build route plan with mapped vehicle routes
-  const mappedVehicleRoutes = plan.vehicleRoutes.map(mapVehicleRouteForExport);
+  const mappedVehicleRoutes = plan.vehicleRoutes.map((r) => mapVehicleRouteForExport(r, plan.depotNodeId));
   const mappedRoutingContext = mapRoutingContextForExport(plan.routingContext as RoutingContext | null | undefined);
   
   const routePlan: RoutePlan = {
