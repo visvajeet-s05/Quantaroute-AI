@@ -22,6 +22,18 @@ export type VehicleRoute = {
   reachable: boolean;
   feasible: boolean;
   warnings: string[];
+  /** Non-depot start node for dynamic re-routes (undefined = depot start). */
+  startNodeId?: string;
+  /** Explicit end node for dynamic re-routes (undefined = depot end). */
+  endNodeId?: string;
+  /** Customers already served and locked before this route segment. */
+  completedCustomerIds?: string[];
+  /** Pending (not-yet-served) customers remaining in this route. */
+  pendingCustomerIds?: string[];
+  /** True when this route was produced by a dynamic re-routing pass. */
+  isDynamicReroute?: boolean;
+  /** Vehicle's current node at the start of re-routing (captured for validation). */
+  initialVehicleCurrentNodeId?: string;
 };
 
 export type RoutePlan = {
@@ -173,6 +185,22 @@ export interface QpsoUnitTestResult {
 }
 
 // ==========================================
+// Dynamic Routing Context
+// ==========================================
+
+export type RoutingMode = 'initial' | 'reroute';
+
+export type RoutingContext = {
+  mode: RoutingMode;
+  depotNodeId: string;
+  startNodeByVehicleId: Record<string, string>;
+  remainingCapacityByVehicleId: Record<string, number>;
+  lockedCustomerIds: string[];
+  eligibleCustomerIds: string[];
+  graphEdges: import('./domain').Edge[];
+};
+
+// ==========================================
 // Dynamic Incident Simulation & Re-routing
 // ==========================================
 
@@ -234,6 +262,7 @@ export type ReroutingResult = {
   revisedSnapshot: RoutePlanSnapshot | null;
   incident: DynamicIncident;
   reroutingAlgorithm: AlgorithmName;
+  reroutingPreset: QpsoPreset;
   reroutingRuntimeMs: number;
   affectedVehicleIds: string[];
   originalRemainingTravelMinutes: number | null;
@@ -242,6 +271,18 @@ export type ReroutingResult = {
   delayAvoidedMinutes: number | null;
   routeStabilityChanges: number;
   warnings: string[];
+  /** Count of served/locked customers that remain excluded from the revised plan. */
+  lockedCustomerCount: number;
+  /** IDs of all customers considered eligible for the revised plan (pending + unserved). */
+  eligibleCustomerIds: string[];
+  /** Population size of the re-routing optimizer. */
+  populationSize: number;
+  /** Iteration count of the re-routing optimizer. */
+  iterations: number;
+  /** Total candidate plan evaluations performed during re-routing. */
+  candidateEvaluations: number;
+  /** Whether the revised route plan passes dynamic validation. */
+  revisedFeasible: boolean;
 };
 
 export interface ReroutingUnitTestResult {

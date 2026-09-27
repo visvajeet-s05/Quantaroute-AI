@@ -41,9 +41,9 @@ export const ReroutingResultSummary: React.FC<ReroutingResultSummaryProps> = ({
   customers.forEach((c) => customerMap.set(c.id, c));
 
   const origMinutes = reroutingResult.originalRemainingTravelMinutes ?? 0;
-  const incMinutes = reroutingResult.incidentAdjustedRemainingTravelMinutes ?? 0;
+  const incMinutes = reroutingResult.incidentAdjustedRemainingTravelMinutes; // may be null (blocked)
   const revMinutes = reroutingResult.revisedRemainingTravelMinutes ?? 0;
-  const delayAvoided = reroutingResult.delayAvoidedMinutes ?? 0;
+  const delayAvoided = reroutingResult.delayAvoidedMinutes; // may be null
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 text-slate-800 space-y-4">
@@ -152,11 +152,19 @@ export const ReroutingResultSummary: React.FC<ReroutingResultSummaryProps> = ({
             <TrendingDown className="w-3.5 h-3.5 text-emerald-600" />
           </div>
           <div className="text-xl font-bold font-mono text-emerald-900">
-            {delayAvoided > 0 ? `-${delayAvoided.toFixed(1)}` : '0.0'}{' '}
-            <span className="text-xs font-normal text-emerald-700">min</span>
+            {delayAvoided !== null ? (
+              delayAvoided > 0 ? `-${delayAvoided.toFixed(1)}` : '0.0'
+            ) : (
+              <span className="text-sm font-semibold">Recovery</span>
+            )}{' '}
+            <span className="text-xs font-normal text-emerald-700">
+              {delayAvoided !== null ? 'min' : ''}
+            </span>
           </div>
           <div className="text-[10px] text-emerald-700 font-medium">
-            vs continuing through incident
+            {delayAvoided !== null
+              ? 'vs continuing through incident'
+              : 'Route recovery achieved'}
           </div>
         </div>
 
@@ -199,7 +207,7 @@ export const ReroutingResultSummary: React.FC<ReroutingResultSummaryProps> = ({
             Remaining Fleet Route Progression
           </span>
           <span className="text-[11px] text-slate-500 font-mono">
-            {origMinutes}m (Orig) → {incMinutes}m (Delayed) → {revMinutes}m (Revised)
+            {origMinutes.toFixed(1)}m (Orig) → {incMinutes !== null ? `${incMinutes.toFixed(1)}m` : 'N/A'} (Impact) → {revMinutes.toFixed(1)}m (Revised)
           </span>
         </div>
 
@@ -217,10 +225,16 @@ export const ReroutingResultSummary: React.FC<ReroutingResultSummaryProps> = ({
           <div className="bg-white rounded-lg p-2.5 border border-amber-200 bg-amber-50/30">
             <div className="text-[11px] text-amber-800 font-medium">2. Incident Impact</div>
             <div className="text-base font-bold font-mono text-amber-900 mt-0.5">
-              {incMinutes.toFixed(1)} <span className="text-xs font-normal text-amber-700">min</span>
+              {incMinutes !== null ? (
+                <>{incMinutes.toFixed(1)} <span className="text-xs font-normal text-amber-700">min</span></>
+              ) : (
+                <span className="text-sm font-semibold text-rose-700">Unavailable</span>
+              )}
             </div>
             <div className="text-[10px] text-amber-700 mt-1">
-              +{Number((incMinutes - origMinutes).toFixed(1))} min obstruction
+              {incMinutes !== null
+                ? `+${Number((incMinutes - origMinutes).toFixed(1))} min obstruction`
+                : 'Blocked route — no detour on original path'}
             </div>
           </div>
 
@@ -231,7 +245,9 @@ export const ReroutingResultSummary: React.FC<ReroutingResultSummaryProps> = ({
               {revMinutes.toFixed(1)} <span className="text-xs font-normal text-teal-700">min</span>
             </div>
             <div className="text-[10px] text-teal-700 font-medium mt-1">
-              Saved {delayAvoided.toFixed(1)} min via detours
+              {delayAvoided !== null
+                ? `Saved ${delayAvoided.toFixed(1)} min via detours`
+                : 'Route recovery from blocked path'}
             </div>
           </div>
         </div>

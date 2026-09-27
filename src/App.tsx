@@ -38,6 +38,7 @@ import {
   findCandidateIncidentEdges,
   injectDynamicIncident,
   runDynamicRerouting,
+  selectGuidedDemoEdge,
   simulatePartialExecution,
   validateRevisedRoutePlan,
 } from './services/dynamicRerouting';
@@ -48,6 +49,7 @@ import { runQpsoUnitTests } from './utils/qpsoValidationTests';
 import { runReroutingUnitTests } from './utils/reroutingValidationTests';
 import { validateScenario } from './utils/scenarioValidation';
 import { ReroutingResultSummary } from './components/ReroutingResultSummary';
+import { ReroutingResultPanel } from './components/ReroutingResultPanel';
 import { AlertOctagon, CheckCircle2 } from 'lucide-react';
 import { Edge } from './types/domain';
 
@@ -84,7 +86,9 @@ export default function App() {
   const [isSimulatingExecution, setIsSimulatingExecution] = useState<boolean>(false);
   const [isOptimizingReroute, setIsOptimizingReroute] = useState<boolean>(false);
   const [preIncidentOrigMinutes, setPreIncidentOrigMinutes] = useState<number>(0);
-  const [preIncidentDelayedMinutes, setPreIncidentDelayedMinutes] = useState<number>(0);
+  // null when blocked route makes incident-adjusted time undefined
+  const [preIncidentDelayedMinutes, setPreIncidentDelayedMinutes] = useState<number | null>(0);
+  const [preIncidentRouteBlocked, setPreIncidentRouteBlocked] = useState<boolean>(false);
 
   // Path test state
   const [pathTestState, setPathTestState] = useState<PathTestState>({
@@ -270,7 +274,7 @@ export default function App() {
     );
   };
 
-  // Dynamic Traffic Incident Injection Handler
+  // Dynamic Traffic Incident Injection Handler (supports both manual and guided incidents)
   const handleInjectIncident = (
     type: IncidentType,
     severity: 1 | 2 | 3,
@@ -287,6 +291,7 @@ export default function App() {
       affectedVehicleIds,
       originalRemainingTravelMinutes,
       incidentAdjustedRemainingTravelMinutes,
+      routeBlockedByIncident,
       updatedVehicleStates,
     } = injectDynamicIncident(
       scenario,
@@ -302,14 +307,56 @@ export default function App() {
     setVehicleDynamicStates(updatedVehicleStates);
     setPreIncidentOrigMinutes(originalRemainingTravelMinutes);
     setPreIncidentDelayedMinutes(incidentAdjustedRemainingTravelMinutes);
+    setPreIncidentRouteBlocked(routeBlockedByIncident);
     setReroutingResult(null); // Reset previous re-route when new incident occurs
 
-    const delayIncrease = (incidentAdjustedRemainingTravelMinutes - originalRemainingTravelMinutes).toFixed(1);
+    const delayMsg = incidentAdjustedRemainingTravelMinutes === null
+      ? 'Route unavailable due to blocked road.'
+      : `Traffic delay increased +${(incidentAdjustedRemainingTravelMinutes - originalRemainingTravelMinutes).toFixed(1)} min.`;
     triggerToast(
       `Incident injected on ${newIncident.affectedEdgeIds.join(', ')}: Impacted vehicles [${
         affectedVehicleIds.length > 0 ? affectedVehicleIds.join(', ') : 'None'
-      }]. Traffic delay increased +${delayIncrease} min.`
+      }]. ${delayMsg}`
     );
+  };
+
+  // Guided Demo Incident: deterministically selects first pending route edge by vehicle ID order
+  const handleInjectGuidedIncident = () => {
+    if (!preIncidentSnapshot) {
+      triggerToast('Generate an initial fleet plan and simulate progress before injecting a guided incident.');
+      return;
+    }
+
+    const guided = selectGuidedDemoEdge(
+      scenario,
+      vehicleDynamicStates,
+      incidentEdges || scenario.edges
+    );
+
+    if (!guided) {
+      triggerToast('No eligible pending route edges found for guided incident. All vehicles may be inactive.');
+      return;
+    }
+
+    // Guided demo always creates a full road closure (severity 3) for maximum visual impact
+    handleInjectIncident('road_closure', 3, guided.edgeId);
+    triggerToast(
+      `Guided Demo Incident: Road Closure on ${guided.edgeId} affecting vehicles [${guided.affectedVehicleIds.join(', ')}].`
+    );
+  };
+
+  // Undo Incident: restore pre-incident traffic state without clearing benchmark history
+  const handleUndoIncident = () => {
+    setIncident(null);
+    setIncidentEdges(null);
+    setReroutingResult(null);
+    setPreIncidentDelayedMinutes(null);
+    setPreIncidentRouteBlocked(false);
+    // Restore vehicle states to pre-incident (planned/en_route, not rerouting/revised)
+    if (preIncidentSnapshot) {
+      setVehicleDynamicStates(preIncidentSnapshot.vehicleDynamicStates);
+    }
+    triggerToast('Incident undone: pre-incident traffic state restored. Benchmark history preserved.');
   };
 
   // Dynamic Fleet Re-Route Optimizer Handler
@@ -331,7 +378,9 @@ export default function App() {
           preIncidentOrigMinutes,
           preIncidentDelayedMinutes,
           algo,
-          'Fast Re-route'
+          'Fast Re-route',
+          initialSnapshot || undefined,      // pass immutable initial snapshot
+          preIncidentSnapshot || undefined    // pass immutable pre-incident snapshot
         );
 
         setReroutingResult(result);
@@ -341,8 +390,11 @@ export default function App() {
         setActivePlanView('revised');
         setIsOptimizingReroute(false);
 
+        const savedMsg = result.delayAvoidedMinutes !== null
+          ? `Saved ${result.delayAvoidedMinutes} min delay!`
+          : 'Route recovery achieved.';
         triggerToast(
-          `Dynamic Re-Route complete (${algo.toUpperCase()}): Saved ${result.delayAvoidedMinutes} min delay! Reassigned ${
+          `Dynamic Re-Route complete (${algo.toUpperCase()}): ${savedMsg} Reassigned ${
             result.routeStabilityChanges
           } stops (${result.reroutingRuntimeMs} ms).`
         );
@@ -576,11 +628,14 @@ export default function App() {
               candidateIncidentEdges={candidateIncidentEdges}
               onSimulatePartialExecution={handleSimulatePartialExecution}
               onInjectIncident={handleInjectIncident}
+              onInjectGuidedIncident={handleInjectGuidedIncident}
+              onUndoIncident={handleUndoIncident}
               onRunRerouting={handleRunDynamicRerouting}
               onResetSimulation={handleResetSimulation}
               isSimulatingExecution={isSimulatingExecution}
-              isOptimizingReroute={isOptimizingReroute}
+               isOptimizingReroute={isOptimizingReroute}
               hasRevisedPlan={Boolean(reroutingResult)}
+              reroutingResult={reroutingResult}
             />
           </div>
 
@@ -597,6 +652,8 @@ export default function App() {
               routePlan={displayedPlan}
               vehicleDynamicStates={vehicleDynamicStates}
               incident={incident}
+              preIncidentPlan={reroutingResult?.preIncidentSnapshot?.routePlan || null}
+              activePlanView={activePlanView}
             />
           </div>
 
@@ -616,7 +673,7 @@ export default function App() {
 
         {/* Dynamic Incident & Re-Routing Summary Dashboard */}
         {reroutingResult && (
-          <div>
+          <div className="space-y-4">
             <ReroutingResultSummary
               reroutingResult={reroutingResult}
               incident={incident}
@@ -627,6 +684,7 @@ export default function App() {
               activePlanView={activePlanView}
               onChangePlanView={setActivePlanView}
             />
+            <ReroutingResultPanel reroutingResult={reroutingResult} />
           </div>
         )}
 

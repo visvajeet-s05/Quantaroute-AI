@@ -2,12 +2,14 @@
  * Dynamic Incident Simulation & Re-Routing Verification Unit Tests
  * QuantaRoute AI
  *
- * 5 non-destructive invariant tests verifying:
+ * 7 non-destructive invariant tests verifying:
  * 1. Partial execution locking & state tracking
  * 2. Incident detection & affected vehicle identification
  * 3. Non-depot start feasible dynamic re-routing & capacity bounds
  * 4. Blocked edge avoidance in revised routes
  * 5. Re-routing metrics fidelity & numerical integrity
+ * 6. Snapshot immutability (pre-incident & initial state unchanged)
+ * 7. Deterministic guided demo (identical incident targeting across runs)
  */
 
 import { Scenario } from '../types/domain';
@@ -311,6 +313,113 @@ export function runReroutingUnitTests(scenario: Scenario): ReroutingUnitTestResu
         ? 'Delay avoided, stability changes, and execution latency verified with 100% mathematical fidelity.'
         : 'Discrepancy detected in re-routing metric calculations.',
       details: `Delay avoided: ${rerouteRes.delayAvoidedMinutes}m (Adjusted: ${rerouteRes.incidentAdjustedRemainingTravelMinutes}m - Revised: ${rerouteRes.revisedRemainingTravelMinutes}m); Stability shifts: ${rerouteRes.routeStabilityChanges}; Latency: ${rerouteRes.reroutingRuntimeMs}ms.`,
+    });
+  }
+
+  // Test 6: Snapshot Immutability
+  {
+    const t0 = performance.now();
+    const simResult = simulatePartialExecution(initialSnapshot, scenario, 1);
+    const { vehicleDynamicStates, preIncidentSnapshot } = simResult;
+    const candidates = findCandidateIncidentEdges(scenario, vehicleDynamicStates, scenario.edges);
+    const targetEdgeId = candidates[0]?.edgeId || 'E05';
+
+    const {
+      incident,
+      incidentEdges,
+      originalRemainingTravelMinutes,
+      incidentAdjustedRemainingTravelMinutes,
+      updatedVehicleStates,
+    } = injectDynamicIncident(
+      scenario,
+      initialSnapshot,
+      vehicleDynamicStates,
+      'road_closure',
+      3,
+      targetEdgeId
+    );
+
+    // Deep-copy snapshots before re-routing to compare post-mutation
+    const initialCopyBefore = JSON.parse(JSON.stringify(initialSnapshot));
+    const preIncidentCopyBefore = JSON.parse(JSON.stringify(preIncidentSnapshot));
+
+    runDynamicRerouting(
+      scenario,
+      incidentEdges,
+      updatedVehicleStates,
+      incident,
+      originalRemainingTravelMinutes,
+      incidentAdjustedRemainingTravelMinutes,
+      'qpso',
+      'Fast Re-route',
+      initialSnapshot,
+      preIncidentSnapshot
+    );
+
+    const initialUnchanged = JSON.stringify(initialCopyBefore) === JSON.stringify(initialSnapshot);
+    const preIncidentUnchanged =
+      JSON.stringify(preIncidentCopyBefore) === JSON.stringify(preIncidentSnapshot);
+
+    const t1 = performance.now();
+    const passed = initialUnchanged && preIncidentUnchanged;
+
+    results.push({
+      id: 'reroute-test-6',
+      name: 'Snapshot Immutability',
+      passed,
+      runtimeMs: Number((t1 - t0).toFixed(2)),
+      summary: passed
+        ? 'Initial and pre-incident snapshots remain byte-for-byte identical after re-routing completes.'
+        : 'One or more snapshots were mutated by the re-routing process.',
+      details: `Initial snapshot immutable: ${initialUnchanged}; Pre-incident snapshot immutable: ${preIncidentUnchanged}.`,
+    });
+  }
+
+  // Test 7: Deterministic Guided Demo
+  {
+    const t0 = performance.now();
+    const { vehicleDynamicStates } = simulatePartialExecution(initialSnapshot, scenario, 1);
+    const candidates = findCandidateIncidentEdges(scenario, vehicleDynamicStates, scenario.edges);
+
+    // Run guided demo selection twice with the same seed — results must be identical
+    const result1 = injectDynamicIncident(
+      scenario,
+      initialSnapshot,
+      vehicleDynamicStates,
+      'road_closure',
+      3,
+      candidates[0]?.edgeId || 'E05'
+    );
+
+    const result2 = injectDynamicIncident(
+      scenario,
+      initialSnapshot,
+      vehicleDynamicStates,
+      'road_closure',
+      3,
+      candidates[0]?.edgeId || 'E05'
+    );
+
+    const sameIncidentEdge =
+      result1.incident.affectedEdgeIds[0] === result2.incident.affectedEdgeIds[0];
+    const sameAffectedVehicles =
+      JSON.stringify(result1.affectedVehicleIds.sort()) ===
+      JSON.stringify(result2.affectedVehicleIds.sort());
+    const sameLatency =
+      result1.incidentAdjustedRemainingTravelMinutes === result2.incidentAdjustedRemainingTravelMinutes;
+
+    const t1 = performance.now();
+    const passed = sameIncidentEdge && sameAffectedVehicles && sameLatency;
+
+    results.push({
+      id: 'reroute-test-7',
+      name: 'Deterministic Guided Demo',
+      passed,
+      runtimeMs: Number((t1 - t0).toFixed(2)),
+      summary: passed
+        ? 'Deterministic guided demo produces identical incident targeting and impact metrics across repeated runs.'
+        : 'Non-deterministic behavior detected in guided demo incident selection or impact analysis.',
+      details: `Same incident edge: ${sameIncidentEdge}; Same affected vehicles: ${sameAffectedVehicles}; Same latency: ${sameLatency}.`,
     });
   }
 

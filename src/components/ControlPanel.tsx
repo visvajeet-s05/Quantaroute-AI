@@ -17,13 +17,14 @@ import { Customer, Scenario, ScenarioPreset } from '../types/domain';
 import { PathTestState } from '../types/pathfinding';
 import {
   AlgorithmName,
-  DynamicIncident,
-  IncidentType,
-  PsoPreset,
-  QpsoPreset,
-  RoutePlan,
-  RoutePlanSnapshot,
-  VehicleDynamicState,
+   DynamicIncident,
+   IncidentType,
+   PsoPreset,
+   QpsoPreset,
+   ReroutingResult,
+   RoutePlan,
+   RoutePlanSnapshot,
+   VehicleDynamicState,
 } from '../types/routing';
 import { PathTestPanel } from './PathTestPanel';
 import { DynamicReroutingPanel } from './DynamicReroutingPanel';
@@ -52,16 +53,17 @@ interface ControlPanelProps {
   isOptimizingQpso: boolean;
   psoPreset: PsoPreset;
   onChangePsoPreset: (preset: PsoPreset) => void;
-
-  // Dynamic incident simulation & re-routing props
   scenario: Scenario;
   initialPlan: RoutePlan | null;
   preIncidentSnapshot: RoutePlanSnapshot | null;
   incident: DynamicIncident | null;
   vehicleDynamicStates: VehicleDynamicState[];
   candidateIncidentEdges: { edgeId: string; label: string; affectedVehicleIds: string[] }[];
+  reroutingResult: ReroutingResult | null;
   onSimulatePartialExecution: (stopsPerVehicle: number) => void;
   onInjectIncident: (type: IncidentType, severity: 1 | 2 | 3, targetEdgeId?: string) => void;
+  onInjectGuidedIncident: () => void;
+  onUndoIncident: () => void;
   onRunRerouting: (algo: AlgorithmName) => void;
   onResetSimulation: () => void;
   isSimulatingExecution: boolean;
@@ -99,8 +101,11 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
   incident,
   vehicleDynamicStates,
   candidateIncidentEdges,
+  reroutingResult,
   onSimulatePartialExecution,
   onInjectIncident,
+  onInjectGuidedIncident,
+  onUndoIncident,
   onRunRerouting,
   onResetSimulation,
   isSimulatingExecution,
@@ -406,9 +411,12 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
         preIncidentSnapshot={preIncidentSnapshot}
         incident={incident}
         vehicleDynamicStates={vehicleDynamicStates}
-        candidateIncidentEdges={candidateIncidentEdges}
-        onSimulatePartialExecution={onSimulatePartialExecution}
+         candidateIncidentEdges={candidateIncidentEdges}
+         reroutingResult={reroutingResult}
+         onSimulatePartialExecution={onSimulatePartialExecution}
         onInjectIncident={onInjectIncident}
+        onInjectGuidedIncident={onInjectGuidedIncident}
+        onUndoIncident={onUndoIncident}
         onRunRerouting={onRunRerouting}
         onResetSimulation={onResetSimulation}
         isSimulatingExecution={isSimulatingExecution}

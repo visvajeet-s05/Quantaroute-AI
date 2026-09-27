@@ -12,13 +12,19 @@ import {
   ArrowRight,
   ShieldAlert,
   Loader2,
-  Info
+  Info,
+  Undo2,
+  Sparkles,
+  Target,
+  TrendingDown,
+  XCircle
 } from 'lucide-react';
 import { Customer, Edge, Scenario } from '../types/domain';
 import {
   AlgorithmName,
   DynamicIncident,
   IncidentType,
+  ReroutingResult,
   RoutePlan,
   RoutePlanSnapshot,
   VehicleDynamicState,
@@ -31,8 +37,11 @@ interface DynamicReroutingPanelProps {
   incident: DynamicIncident | null;
   vehicleDynamicStates: VehicleDynamicState[];
   candidateIncidentEdges: { edgeId: string; label: string; affectedVehicleIds: string[] }[];
+  reroutingResult: ReroutingResult | null;
   onSimulatePartialExecution: (stopsPerVehicle: number) => void;
   onInjectIncident: (type: IncidentType, severity: 1 | 2 | 3, targetEdgeId?: string) => void;
+  onInjectGuidedIncident: () => void;
+  onUndoIncident: () => void;
   onRunRerouting: (algo: AlgorithmName) => void;
   onResetSimulation: () => void;
   isSimulatingExecution: boolean;
@@ -47,8 +56,11 @@ export const DynamicReroutingPanel: React.FC<DynamicReroutingPanelProps> = ({
   incident,
   vehicleDynamicStates,
   candidateIncidentEdges,
+  reroutingResult,
   onSimulatePartialExecution,
   onInjectIncident,
+  onInjectGuidedIncident,
+  onUndoIncident,
   onRunRerouting,
   onResetSimulation,
   isSimulatingExecution,
@@ -64,6 +76,7 @@ export const DynamicReroutingPanel: React.FC<DynamicReroutingPanelProps> = ({
   const hasInitialPlan = Boolean(initialPlan);
   const hasPartialExecution = Boolean(preIncidentSnapshot);
   const hasIncident = Boolean(incident && incident.active);
+  const canUndoIncident = hasIncident || hasRevisedPlan;
 
   // Auto-target edge preview
   const autoTargetEdge = candidateIncidentEdges[0];
@@ -78,19 +91,31 @@ export const DynamicReroutingPanel: React.FC<DynamicReroutingPanelProps> = ({
             Dynamic Incident & Re-Route
           </h2>
         </div>
-        {(hasPartialExecution || hasIncident || hasRevisedPlan) && (
-          <button
-            onClick={onResetSimulation}
-            className="text-[11px] text-slate-500 hover:text-slate-800 flex items-center gap-1 cursor-pointer transition-colors"
-          >
-            <RotateCcw className="w-3 h-3" />
-            <span>Reset Sim</span>
-          </button>
-        )}
+        <div className="flex items-center gap-1">
+          {(hasPartialExecution || hasIncident || hasRevisedPlan) && (
+            <button
+              onClick={onResetSimulation}
+              className="text-[11px] text-slate-500 hover:text-slate-800 flex items-center gap-1 cursor-pointer transition-colors"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Reset Sim</span>
+            </button>
+          )}
+          {canUndoIncident && (
+            <button
+              onClick={onUndoIncident}
+              className="text-[11px] text-amber-600 hover:text-amber-800 flex items-center gap-1 cursor-pointer transition-colors bg-amber-50 px-2 py-1 rounded border border-amber-200"
+              title="Restore pre-incident traffic state, clear incident and re-route result"
+            >
+              <Undo2 className="w-3 h-3" />
+              <span>Undo Incident</span>
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Step Indicator Progression */}
-      <div className="grid grid-cols-4 gap-1 text-center text-[10px] font-semibold">
+       {/* Step Indicator Progression */}
+      <div className="grid grid-cols-5 gap-1 text-center text-[10px] font-semibold">
         <div
           className={`py-1 rounded ${
             hasInitialPlan
@@ -132,6 +157,15 @@ export const DynamicReroutingPanel: React.FC<DynamicReroutingPanelProps> = ({
           }`}
         >
           4. Re-Route
+        </div>
+        <div
+          className={`py-1 rounded ${
+            hasRevisedPlan
+              ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+              : 'bg-slate-100 text-slate-400'
+          }`}
+        >
+          5. Compare
         </div>
       </div>
 
@@ -226,7 +260,7 @@ export const DynamicReroutingPanel: React.FC<DynamicReroutingPanelProps> = ({
             >
               <option value={1}>Level 1 (Moderate 2x)</option>
               <option value={2}>Level 2 (Severe 3.5x)</option>
-              <option value={3}>Level 3 ({incidentType === 'road_closure' ? 'Full Closure' : '5x Surge'})</option>
+              <option value={3}>{incidentType === 'road_closure' ? 'Full Closure' : '5x Surge'}</option>
             </select>
           </div>
         </div>
@@ -250,21 +284,35 @@ export const DynamicReroutingPanel: React.FC<DynamicReroutingPanelProps> = ({
           </select>
         </div>
 
-        <button
-          type="button"
-          onClick={() =>
-            onInjectIncident(
-              incidentType,
-              incidentSeverity,
-              selectedEdgeId === 'auto' ? undefined : selectedEdgeId
-            )
-          }
-          disabled={!hasPartialExecution || isOptimizingReroute}
-          className="w-full py-2 px-3 rounded-lg bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
-        >
-          <Zap className="w-3.5 h-3.5 fill-current" />
-          <span>{hasIncident ? 'Re-Inject Traffic Incident' : 'Inject Incident'}</span>
-        </button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() =>
+              onInjectIncident(
+                incidentType,
+                incidentSeverity,
+                selectedEdgeId === 'auto' ? undefined : selectedEdgeId
+              )
+            }
+            disabled={!hasPartialExecution || isOptimizingReroute}
+            className="flex-1 py-2 px-3 rounded-lg bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+          >
+            <Zap className="w-3.5 h-3.5 fill-current" />
+            <span>{hasIncident ? 'Re-Inject Traffic Incident' : 'Inject Incident'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={onInjectGuidedIncident}
+            disabled={!hasPartialExecution || isOptimizingReroute}
+            className="flex-1 py-2 px-3 rounded-lg bg-slate-900 hover:bg-slate-800 active:bg-slate-700 text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+            title="Deterministically inject incident on first pending route edge for reproducible demo"
+          >
+            <Sparkles className="w-3.5 h-3.5 fill-current" />
+            <Target className="w-3.5 h-3.5 fill-current" />
+            <span>Guided Demo Incident</span>
+          </button>
+        </div>
       </div>
 
       {/* Step 4: Fleet Dynamic Re-Route */}
@@ -307,18 +355,91 @@ export const DynamicReroutingPanel: React.FC<DynamicReroutingPanelProps> = ({
           ) : (
             <>
               <Play className="w-3.5 h-3.5 fill-current" />
-              <span>Trigger Dynamic Re-route</span>
+              <span>Re-optimize Pending Deliveries</span>
             </>
           )}
         </button>
 
-        <div className="flex items-start gap-1.5 text-[11px] text-teal-900 bg-teal-50/80 border border-teal-200/80 rounded-md p-2">
-          <Info className="w-3.5 h-3.5 shrink-0 text-teal-600 mt-0.5" />
-          <span>
-            Locks served customers, starts each vehicle from its current stop, uses remaining capacity, and avoids blocked roads using Dijkstra detours.
-          </span>
+          <div className="flex items-start gap-1.5 text-[11px] text-teal-900 bg-teal-50/80 border border-teal-200/80 rounded-md p-2">
+            <Info className="w-3.5 h-3.5 shrink-0 text-teal-600 mt-0.5" />
+            <span>
+              Locks served customers, starts each vehicle from its current stop, uses remaining capacity, and avoids blocked roads using Dijkstra detours.
+            </span>
+          </div>
         </div>
+
+        {/* Step 5: Compare Response */}
+        {hasRevisedPlan && reroutingResult && (
+          <div className="space-y-3 pt-2 border-t border-slate-100">
+            <label className="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5 text-indigo-600" />
+              Step 5: Compare Original vs Incident vs Revised
+            </label>
+
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <div className="bg-slate-50 rounded-lg border border-slate-200 p-2.5 space-y-1">
+                <div className="text-[10px] text-slate-500 font-medium">Original</div>
+                <div className="text-sm font-bold font-mono text-slate-800">
+                  {reroutingResult.originalRemainingTravelMinutes !== null
+                    ? `${reroutingResult.originalRemainingTravelMinutes.toFixed(1)} min`
+                    : 'N/A'}
+                </div>
+              </div>
+
+              <div className="bg-amber-50 rounded-lg border border-amber-200 p-2.5 space-y-1">
+                <div className="text-[10px] text-amber-800 font-medium">Incident Impact</div>
+                <div className="text-sm font-bold font-mono text-amber-900">
+                  {reroutingResult.incidentAdjustedRemainingTravelMinutes !== null
+                    ? `${reroutingResult.incidentAdjustedRemainingTravelMinutes.toFixed(1)} min`
+                    : 'Blocked'}
+                </div>
+              </div>
+
+              <div className="bg-teal-50 rounded-lg border border-teal-200 p-2.5 space-y-1">
+                <div className="text-[10px] text-teal-800 font-medium">Revised</div>
+                <div className="text-sm font-bold font-mono text-teal-900">
+                  {reroutingResult.revisedRemainingTravelMinutes !== null
+                    ? `${reroutingResult.revisedRemainingTravelMinutes.toFixed(1)} min`
+                    : 'N/A'}
+                </div>
+              </div>
+            </div>
+
+            {reroutingResult.delayAvoidedMinutes !== null && (
+              <div className="flex items-center justify-center gap-2 text-xs text-emerald-700 bg-emerald-50/60 border border-emerald-200 rounded-lg px-3 py-1.5">
+                <TrendingDown className="w-3.5 h-3.5 text-emerald-600" />
+                <span>
+                  Delay avoided: <strong>{reroutingResult.delayAvoidedMinutes.toFixed(1)} min</strong>
+                </span>
+              </div>
+            )}
+
+            <div className="text-[10px] text-slate-500 flex justify-between items-center">
+              <span>
+                Stability: {reroutingResult.routeStabilityChanges} shift
+                {reroutingResult.routeStabilityChanges !== 1 ? 's' : ''} &middot;
+                Runtime: {reroutingResult.reroutingRuntimeMs.toFixed(1)} ms
+              </span>
+              <span
+                className={`font-semibold flex items-center gap-1 ${
+                  reroutingResult.revisedFeasible ? 'text-emerald-600' : 'text-rose-600'
+                }`}
+              >
+                {reroutingResult.revisedFeasible ? (
+                  <>
+                    <CheckCircle2 className="w-3 h-3" />
+                    Feasible
+                  </>
+                ) : (
+                  <>
+                    <XCircle className="w-3 h-3" />
+                    Infeasible
+                  </>
+                )}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
   );
 };

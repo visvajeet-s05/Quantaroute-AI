@@ -61,7 +61,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
             </div>
             <div>
               <h2 className="text-base font-bold tracking-tight">Scenario & Algorithm Specs</h2>
-              <p className="text-xs text-slate-400">Automated Integrity, Domain Constraints & Dijkstra Tests</p>
+              <p className="text-xs text-slate-400">Automated Integrity, Domain Constraints, Pathfinding & Dynamic Re-Routing Tests</p>
             </div>
           </div>
           <button
@@ -384,7 +384,7 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
               <div className="flex items-center justify-between">
                 <h4 className="font-semibold text-slate-800 text-xs uppercase tracking-wide flex items-center gap-1.5">
                   <Zap className="w-3.5 h-3.5 text-amber-600" />
-                  Dynamic Re-routing Tests (5 Invariants)
+                   Dynamic Re-routing Tests (6 Invariants)
                 </h4>
                 <span className="text-[11px] text-slate-500 font-mono">
                   {reroutingTests.filter((t) => t.passed).length}/{reroutingTests.length} Passed

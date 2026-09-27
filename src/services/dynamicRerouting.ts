@@ -7,27 +7,27 @@
  * partial delivery locking, incident injection, and delay-avoidance quantification.
  */
 
-import { Customer, Edge, Node, Scenario, Vehicle } from '../types/domain';
+import { Customer, Edge, Scenario, Vehicle } from '../types/domain';
 import {
   AlgorithmName,
   DynamicIncident,
   IncidentType,
-  PsoPreset,
   QpsoPreset,
   ReroutingResult,
   RoutePlan,
   RoutePlanSnapshot,
   RoutePlanValidationResult,
+  RoutingContext,
   VehicleDynamicState,
   VehicleRoute,
 } from '../types/routing';
 import { findShortestPath } from '../algorithms/dijkstra';
 import { getEffectiveTravelMinutes } from '../utils/graphIndex';
 import { SeededRandom } from '../utils/seededRandom';
-import { calculateMeanBest, qpsoCoordinateUpdate, QPSO_PRESETS } from '../algorithms/quantumPso';
+import { qpsoCoordinateUpdate, QPSO_PRESETS } from '../algorithms/quantumPso';
 
 /**
- * Deep-clones an object immutably.
+ * Deep-clones an object immutably using JSON serialization.
  */
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
@@ -35,6 +35,7 @@ function deepClone<T>(obj: T): T {
 
 /**
  * Creates the initial snapshot from an initial RoutePlan.
+ * Immutable deep copy — never mutated after creation.
  */
 export function createInitialSnapshot(
   plan: RoutePlan,
@@ -70,6 +71,7 @@ export function createInitialSnapshot(
 /**
  * Simulates partial route execution:
  * Locks completed customer stops and updates each vehicle's current node and remaining capacity.
+ * Completes the first N assigned customers per active vehicle (deterministic, no randomness).
  */
 export function simulatePartialExecution(
   initialSnapshot: RoutePlanSnapshot,
@@ -78,9 +80,6 @@ export function simulatePartialExecution(
 ): { preIncidentSnapshot: RoutePlanSnapshot; vehicleDynamicStates: VehicleDynamicState[] } {
   const customerMap = new Map<string, Customer>();
   scenario.customers.forEach((c) => customerMap.set(c.id, c));
-
-  const vehicleMap = new Map<string, Vehicle>();
-  scenario.vehicles.forEach((v) => vehicleMap.set(v.id, v));
 
   const vehicleDynamicStates: VehicleDynamicState[] = scenario.vehicles.map((v) => {
     const route = initialSnapshot.routePlan.vehicleRoutes.find((r) => r.vehicleId === v.id);
@@ -99,7 +98,7 @@ export function simulatePartialExecution(
       };
     }
 
-    // Number of stops this vehicle actually completes
+    // Deterministically complete first N stops (no Math.random)
     const completedCount = Math.min(assignedStops.length, stopsCompletedPerVehicle);
     const deliveredCustomerIds = assignedStops.slice(0, completedCount);
     const pendingCustomerIds = assignedStops.slice(completedCount);
@@ -112,12 +111,11 @@ export function simulatePartialExecution(
 
     const remainingCapacity = Math.max(0, capacityLimit - deliveredDemand);
 
-    // Current node is the last completed customer stop node,
-    // or depot if vehicle completed all its stops and finished its route
+    // Current node = last completed customer's node, or depot if nothing completed
     let currentNodeId = scenario.depotNodeId;
     if (deliveredCustomerIds.length > 0) {
       if (pendingCustomerIds.length === 0 && stopsCompletedPerVehicle > assignedStops.length) {
-        // Returned to depot
+        // Vehicle completed entire route, returned to depot
         currentNodeId = scenario.depotNodeId;
       } else {
         const lastDelivered = customerMap.get(deliveredCustomerIds[deliveredCustomerIds.length - 1]);
@@ -138,6 +136,7 @@ export function simulatePartialExecution(
     };
   });
 
+  // Deep-clone the pre-incident snapshot — immutable after creation
   const preIncidentSnapshot: RoutePlanSnapshot = deepClone({
     id: `snapshot-pre-incident-${Date.now()}`,
     timestamp: new Date().toISOString(),
@@ -154,7 +153,8 @@ export function simulatePartialExecution(
 }
 
 /**
- * Finds critical candidate edges that lie on active vehicles' pending remaining paths.
+ * Finds all edges on active vehicles' pending route legs.
+ * Returns candidates sorted by number of affected vehicles (desc), then edgeId (asc) for determinism.
  */
 export function findCandidateIncidentEdges(
   scenario: Scenario,
@@ -164,7 +164,7 @@ export function findCandidateIncidentEdges(
   const customerMap = new Map<string, Customer>();
   scenario.customers.forEach((c) => customerMap.set(c.id, c));
 
-  // Trace remaining legs for each vehicle: currentNode -> pendingStop1 -> ... -> depot
+  // Map edgeId -> set of vehicle IDs that use it in pending legs
   const edgeUsageMap = new Map<string, Set<string>>();
 
   vehicleDynamicStates.forEach((vs) => {
@@ -194,21 +194,89 @@ export function findCandidateIncidentEdges(
     if (edge) {
       const vArr = Array.from(vSet);
       candidates.push({
-        edgeId,
-        label: `${edge.id} (${edge.streetName} ${edge.from}->${edge.to})`,
+        edgeId: eId,
+        label: `${eId} (${edge.from}->${edge.to})`,
         affectedVehicleIds: vArr,
       });
     }
   });
 
-  // Sort descending by number of affected vehicles
-  candidates.sort((a, b) => b.affectedVehicleIds.length - a.affectedVehicleIds.length);
+  // Sort: most affected vehicles first; ties broken by edgeId for full determinism
+  candidates.sort((a, b) => {
+    const diff = b.affectedVehicleIds.length - a.affectedVehicleIds.length;
+    return diff !== 0 ? diff : a.edgeId.localeCompare(b.edgeId);
+  });
   return candidates;
 }
 
 /**
+ * Deterministic guided demo incident edge selection:
+ * Chooses the first eligible, non-blocked edge on any vehicle's pending route,
+ * sorted by vehicle ID (ascending) then by route order.
+ * Avoids edges that are already blocked.
+ */
+export function selectGuidedDemoEdge(
+  scenario: Scenario,
+  vehicleDynamicStates: VehicleDynamicState[],
+  edges: Edge[]
+): { edgeId: string; affectedVehicleIds: string[] } | null {
+  const customerMap = new Map<string, Customer>();
+  scenario.customers.forEach((c) => customerMap.set(c.id, c));
+
+  // Sort states by vehicleId ascending for deterministic ordering
+  const sortedStates = [...vehicleDynamicStates].sort((a, b) =>
+    a.vehicleId.localeCompare(b.vehicleId)
+  );
+
+  for (const vs of sortedStates) {
+    if (vs.pendingCustomerIds.length === 0) continue;
+
+    let curr = vs.currentNodeId;
+    const targetNodes = vs.pendingCustomerIds
+      .map((cId) => customerMap.get(cId)?.nodeId)
+      .filter((n): n is string => Boolean(n));
+    targetNodes.push(scenario.depotNodeId);
+
+    for (const target of targetNodes) {
+      const path = findShortestPath(scenario.nodes, edges, curr, target);
+      if (path.reachable && path.edgeIds.length > 0) {
+        for (const eId of path.edgeIds) {
+          const edge = edges.find((e) => e.id === eId);
+          if (edge && !edge.isBlocked) {
+            // Found the first eligible edge; now find all vehicles that use it in pending legs
+            const affectedVehicleIds = vehicleDynamicStates
+              .filter((v2) => {
+                if (v2.pendingCustomerIds.length === 0) return false;
+                let c2 = v2.currentNodeId;
+                const t2 = v2.pendingCustomerIds
+                  .map((cId) => customerMap.get(cId)?.nodeId)
+                  .filter((n): n is string => Boolean(n));
+                t2.push(scenario.depotNodeId);
+                for (const tgt2 of t2) {
+                  const p2 = findShortestPath(scenario.nodes, edges, c2, tgt2);
+                  if (p2.reachable && p2.edgeIds.includes(eId)) return true;
+                  c2 = tgt2;
+                }
+                return false;
+              })
+              .map((v2) => v2.vehicleId);
+            return { edgeId: eId, affectedVehicleIds };
+          }
+        }
+      }
+      curr = target;
+    }
+  }
+
+  return null;
+}
+
+/**
  * Injects a traffic incident (Road Closure or Congestion Surge) onto the road graph.
- * Identifies affected vehicles and computes original vs delayed travel times.
+ * Returns immutably updated edge state; does not mutate the scenario or any snapshot.
+ *
+ * For a full road closure (severity 3), if the post-incident graph leaves any vehicle
+ * route completely disconnected, incidentAdjustedRemainingTravelMinutes is null.
  */
 export function injectDynamicIncident(
   scenario: Scenario,
@@ -222,38 +290,32 @@ export function injectDynamicIncident(
   incidentEdges: Edge[];
   affectedVehicleIds: string[];
   originalRemainingTravelMinutes: number;
-  incidentAdjustedRemainingTravelMinutes: number;
+  incidentAdjustedRemainingTravelMinutes: number | null;
+  routeBlockedByIncident: boolean;
   updatedVehicleStates: VehicleDynamicState[];
 } {
-  const currentEdges = deepClone(scenario.edges);
+  // Deep-clone edges so we never mutate scenario or any snapshot
+  const currentEdges: Edge[] = deepClone(scenario.edges);
   const candidateEdges = findCandidateIncidentEdges(scenario, vehicleDynamicStates, currentEdges);
 
-  // If target edge not provided or not in candidates, pick highest impact candidate
+  // Resolve chosen edge: use provided target or fall back to highest-impact candidate
   let chosenEdgeId = targetEdgeId;
   if (!chosenEdgeId || !currentEdges.some((e) => e.id === chosenEdgeId)) {
-    chosenEdgeId = candidateEdges[0]?.edgeId || currentEdges[4]?.id || 'E05';
+    chosenEdgeId = candidateEdges[0]?.edgeId || currentEdges[4]?.id || currentEdges[0]?.id;
   }
 
   const affectedEdge = currentEdges.find((e) => e.id === chosenEdgeId);
   const multBefore = affectedEdge ? [affectedEdge.congestionMultiplier] : [1.0];
   let multAfter: number[] = [1.0];
 
-  // Apply incident modifications
+  // Apply incident to the cloned edge list
   if (type === 'road_closure') {
     if (severity === 1) {
-      // Lane restriction (2.5x)
-      if (affectedEdge) {
-        affectedEdge.congestionMultiplier = 2.5;
-        multAfter = [2.5];
-      }
+      if (affectedEdge) { affectedEdge.congestionMultiplier = 2.5; multAfter = [2.5]; }
     } else if (severity === 2) {
-      // Major obstruction (5.0x)
-      if (affectedEdge) {
-        affectedEdge.congestionMultiplier = 5.0;
-        multAfter = [5.0];
-      }
+      if (affectedEdge) { affectedEdge.congestionMultiplier = 5.0; multAfter = [5.0]; }
     } else {
-      // Complete road closure
+      // Severity 3: full block
       if (affectedEdge) {
         affectedEdge.isBlocked = true;
         affectedEdge.congestionMultiplier = 99.0;
@@ -261,8 +323,8 @@ export function injectDynamicIncident(
       }
     }
   } else {
-    // Congestion Surge
-    const surgeMultiplier = severity === 1 ? 2.0 : severity === 2 ? 3.5 : 5.0;
+    // Congestion Surge multipliers: severity 1 → ≥1.5, severity 2 → ≥2.0, severity 3 → ≥3.0
+    const surgeMultiplier = severity === 1 ? 1.5 : severity === 2 ? 2.0 : 3.0;
     if (affectedEdge) {
       affectedEdge.congestionMultiplier = surgeMultiplier;
       affectedEdge.isBlocked = false;
@@ -270,12 +332,12 @@ export function injectDynamicIncident(
     }
   }
 
-  // Calculate pre-incident remaining travel time vs incident-adjusted remaining travel time
   const customerMap = new Map<string, Customer>();
   scenario.customers.forEach((c) => customerMap.set(c.id, c));
 
   let originalRemainingTravelMinutes = 0;
-  let incidentAdjustedRemainingTravelMinutes = 0;
+  let incidentAdjustedTravelMinutes = 0;
+  let routeBlockedByIncident = false;
   const affectedVehicleSet = new Set<string>();
 
   vehicleDynamicStates.forEach((vs) => {
@@ -288,47 +350,44 @@ export function injectDynamicIncident(
     let vehicleIsAffected = false;
 
     for (const target of targetNodes) {
-      // Pre-incident path on original edges
+      // Original path on pre-incident scenario edges
       const prePath = findShortestPath(scenario.nodes, scenario.edges, curr, target);
       if (prePath.reachable) {
         originalRemainingTravelMinutes += prePath.travelMinutes;
-
-        // Check if this pre-incident path traversed the incident edge
         if (prePath.edgeIds.includes(chosenEdgeId!)) {
           vehicleIsAffected = true;
         }
-
-        // Incident-adjusted travel time of the SAME physical edge sequence under new conditions
-        let legIncidentMinutes = 0;
-        for (const eId of prePath.edgeIds) {
-          const modEdge = currentEdges.find((e) => e.id === eId);
-          if (modEdge) {
-            if (modEdge.isBlocked) {
-              // Traversing a closed edge causes severe delay/stoppage penalty
-              legIncidentMinutes += modEdge.baseTravelMinutes * 50 + 45;
-            } else {
-              legIncidentMinutes += getEffectiveTravelMinutes(modEdge);
-            }
-          }
-        }
-        incidentAdjustedRemainingTravelMinutes += legIncidentMinutes;
       }
+
+      // Post-incident: Dijkstra finds best detour using incident-modified edge costs
+      const incidentPath = findShortestPath(scenario.nodes, currentEdges, curr, target);
+      if (incidentPath.reachable) {
+        let legMinutes = 0;
+        for (const eId of incidentPath.edgeIds) {
+          const modEdge = currentEdges.find((e) => e.id === eId);
+          if (modEdge) legMinutes += getEffectiveTravelMinutes(modEdge);
+        }
+        incidentAdjustedTravelMinutes += legMinutes;
+      } else {
+        // Graph disconnected: no route available through incident
+        routeBlockedByIncident = true;
+      }
+
       curr = target;
     }
 
-    if (vehicleIsAffected) {
-      affectedVehicleSet.add(vs.vehicleId);
-    }
+    if (vehicleIsAffected) affectedVehicleSet.add(vs.vehicleId);
   });
 
   const affectedVehicleIds = Array.from(affectedVehicleSet);
 
+  const edgeLabel = affectedEdge ? `${affectedEdge.from}->${affectedEdge.to}` : chosenEdgeId;
   const desc =
     type === 'road_closure'
       ? severity === 3
-        ? `Full road closure on ${affectedEdge?.streetName || chosenEdgeId} (${chosenEdgeId}). Street segment completely blocked.`
-        : `Severe blockage on ${affectedEdge?.streetName || chosenEdgeId} (${chosenEdgeId}) with ${multAfter[0]}x congestion.`
-      : `Congestion surge on ${affectedEdge?.streetName || chosenEdgeId} (${chosenEdgeId}) with ${multAfter[0]}x traffic delay.`;
+        ? `Full road closure on edge ${chosenEdgeId} (${edgeLabel}). Street segment completely blocked.`
+        : `Severe blockage on edge ${chosenEdgeId} (${edgeLabel}) with ${multAfter[0]}x congestion.`
+      : `Congestion surge on edge ${chosenEdgeId} (${edgeLabel}) with ${multAfter[0]}x traffic delay.`;
 
   const incident: DynamicIncident = {
     id: `incident-${Date.now()}`,
@@ -348,8 +407,8 @@ export function injectDynamicIncident(
     executionState: affectedVehicleSet.has(vs.vehicleId)
       ? 'rerouting'
       : vs.pendingCustomerIds.length > 0
-      ? 'en_route'
-      : 'inactive',
+        ? 'en_route'
+        : 'inactive',
   }));
 
   return {
@@ -357,15 +416,19 @@ export function injectDynamicIncident(
     incidentEdges: currentEdges,
     affectedVehicleIds,
     originalRemainingTravelMinutes: Number(originalRemainingTravelMinutes.toFixed(2)),
-    incidentAdjustedRemainingTravelMinutes: Number(
-      incidentAdjustedRemainingTravelMinutes.toFixed(2)
-    ),
+    // null if no route exists even with detour (route recovery needed)
+    incidentAdjustedRemainingTravelMinutes: routeBlockedByIncident
+      ? null
+      : Number(incidentAdjustedTravelMinutes.toFixed(2)),
+    routeBlockedByIncident,
     updatedVehicleStates,
   };
 }
 
 /**
- * Validates a revised route plan where vehicles start at their respective current nodes.
+ * Validates a revised route plan where vehicles start at their current (non-depot) nodes.
+ * Checks: correct start node per vehicle dynamic state, depot return, blocked edge avoidance,
+ * path reachability, capacity compliance, and duplicate/coverage checks.
  */
 export function validateRevisedRoutePlan(
   plan: RoutePlan,
@@ -408,7 +471,6 @@ export function validateRevisedRoutePlan(
       }
     }
 
-    // Check blocked edge avoidance
     for (const edgeId of route.fullPathEdgeIds) {
       const e = edgeMap.get(edgeId);
       if (e?.isBlocked) {
@@ -447,9 +509,14 @@ export function validateRevisedRoutePlan(
 }
 
 /**
- * Runs genuine dynamic fleet re-routing:
- * Solves vehicle routing for pending customers starting from each vehicle's current node to depot,
- * avoiding blocked edges and optimizing traffic travel time on the incident graph.
+ * Runs genuine dynamic fleet re-routing.
+ * Solves VRP for pending customers from each vehicle's current node back to depot,
+ * using the post-incident graph. Supports Greedy, Classical PSO (via QPSO keys), and QPSO.
+ *
+ * Default re-routing algorithm: QPSO Fast Re-route (15 particles, 25 iters, beta 1.0→0.5).
+ *
+ * externalInitialSnapshot / externalPreIncidentSnapshot: immutable deep copies from App state.
+ * They are cloned again here — never mutated.
  */
 export function runDynamicRerouting(
   scenario: Scenario,
@@ -457,9 +524,11 @@ export function runDynamicRerouting(
   vehicleDynamicStates: VehicleDynamicState[],
   incident: DynamicIncident,
   originalRemainingTravelMinutes: number,
-  incidentAdjustedRemainingTravelMinutes: number,
+  incidentAdjustedRemainingTravelMinutes: number | null,
   algorithmName: AlgorithmName = 'qpso',
-  presetName: QpsoPreset = 'Fast Re-route'
+  presetName: QpsoPreset = 'Fast Re-route',
+  externalInitialSnapshot?: RoutePlanSnapshot,
+  externalPreIncidentSnapshot?: RoutePlanSnapshot
 ): ReroutingResult {
   const t0 = performance.now();
 
@@ -469,7 +538,7 @@ export function runDynamicRerouting(
   const vehicleStateMap = new Map<string, VehicleDynamicState>();
   vehicleDynamicStates.forEach((vs) => vehicleStateMap.set(vs.vehicleId, vs));
 
-  // Collect all pending customers that need routing
+  // Collect all pending (not yet served) customers across all vehicles
   const pendingCustomerIdsSet = new Set<string>();
   vehicleDynamicStates.forEach((vs) => {
     vs.pendingCustomerIds.forEach((cId) => pendingCustomerIdsSet.add(cId));
@@ -484,7 +553,30 @@ export function runDynamicRerouting(
   const vehicles = scenario.vehicles;
   const numVehicles = vehicles.length;
 
-  // Available vehicles for pending customers
+  // Build a shared RoutingContext for the re-routing problem.
+  // lockedCustomerIds are served customers excluded from optimization.
+  // eligibleCustomerIds are all pending/unserved customers under consideration.
+  const lockedCustomerIds = Array.from(
+    vehicleDynamicStates.reduce((acc, vs) => {
+      vs.deliveredCustomerIds.forEach((cId) => acc.add(cId));
+      return acc;
+    }, new Set<string>())
+  ).sort();
+
+  const routingContext: RoutingContext = {
+    mode: 'reroute',
+    depotNodeId: scenario.depotNodeId,
+    startNodeByVehicleId: Object.fromEntries(
+      vehicleDynamicStates.map((vs) => [vs.vehicleId, vs.currentNodeId])
+    ),
+    remainingCapacityByVehicleId: Object.fromEntries(
+      vehicleDynamicStates.map((vs) => [vs.vehicleId, vs.remainingCapacity])
+    ),
+    lockedCustomerIds,
+    eligibleCustomerIds: pendingCustomers.map((c) => c.id),
+    graphEdges: deepClone(incidentEdges),
+  };
+
   const activeVehicles = vehicles.filter((v) => {
     const vs = vehicleStateMap.get(v.id);
     return vs && vs.remainingCapacity > 0;
@@ -492,8 +584,8 @@ export function runDynamicRerouting(
 
   const warnings: string[] = [];
 
-  // Re-routing solver based on chosen algorithm
-  // Evaluates candidate solutions where each vehicle starts at vs.currentNodeId and returns to depot
+  // Build full VehicleRoute for a given customer assignment map.
+  // Each vehicle starts at its current node (vs.currentNodeId), ends at depot.
   const buildCandidateRoutes = (
     assignments: Map<string, Customer[]>
   ): VehicleRoute[] => {
@@ -540,7 +632,7 @@ export function runDynamicRerouting(
         curr = cust.nodeId;
       }
 
-      // Return to depot leg (always required if vehicle is not already at depot or served pending stops)
+      // Every non-empty revised route must end at depot
       if (assignedCusts.length > 0 || startNodeId !== scenario.depotNodeId) {
         stopNodeIds.push(scenario.depotNodeId);
         const returnLeg = findShortestPath(scenario.nodes, incidentEdges, curr, scenario.depotNodeId);
@@ -564,6 +656,9 @@ export function runDynamicRerouting(
       const capacityLimit = vs ? vs.remainingCapacity : vehicle.capacity;
       const capacityExceeded = usedRemainingDemand > capacityLimit;
 
+      // Completed (locked) customers for this vehicle from pre-incident state
+      const completedForVehicle = vs ? [...vs.deliveredCustomerIds] : [];
+
       routes.push({
         vehicleId: vehicle.id,
         vehicleLabel: vehicle.label,
@@ -581,15 +676,24 @@ export function runDynamicRerouting(
         reachable: isReachable,
         feasible: isReachable && !capacityExceeded && !routeBlocked,
         warnings: capacityExceeded ? ['Vehicle remaining capacity exceeded'] : [],
+        // Dynamic reroute fields
+        startNodeId,
+        endNodeId: scenario.depotNodeId,
+        completedCustomerIds: completedForVehicle,
+        pendingCustomerIds: [...customerIds],
+        isDynamicReroute: true,
+        initialVehicleCurrentNodeId: startNodeId,
       });
     }
 
     return routes;
   };
 
+  // Shared objective function: F = 0.55T + 0.25D + 0.20C + 10000P (unchanged from initial routing)
   const evaluateCandidatePlan = (
     routes: VehicleRoute[]
   ): { plan: RoutePlan; score: number } => {
+    candidateEvaluations++;
     let totMin = 0;
     let totDist = 0;
     let totCong = 0;
@@ -649,7 +753,7 @@ export function runDynamicRerouting(
     return { plan, score };
   };
 
-  // Capacity-aware allocation helper
+  // Shared random-key decoder for re-routing (mirrors initial routing decoder logic)
   const decodeKeysToAssignments = (
     assignKeys: number[],
     prioKeys: number[]
@@ -665,22 +769,17 @@ export function runDynamicRerouting(
       const clampedAssign = Math.max(0, Math.min(0.999999, rawAssign));
       const vIdx = Math.min(numAvail - 1, Math.floor(clampedAssign * numAvail));
       const chosenVehicle = targetVehicles[vIdx];
-
-      const rawPrio = prioKeys[idx] ?? 0;
-      map.get(chosenVehicle.id)!.push({ cust, prio: rawPrio });
+      map.get(chosenVehicle.id)!.push({ cust, prio: prioKeys[idx] ?? 0 });
     });
 
-    // Sort by priority key
     map.forEach((list) => list.sort((a, b) => a.prio - b.prio));
 
-    // Capacity repair against each vehicle's remaining capacity
     const resultMap = new Map<string, Customer[]>();
     vehicles.forEach((v) => resultMap.set(v.id, []));
-
     const vehicleLoads = new Map<string, number>();
     vehicles.forEach((v) => vehicleLoads.set(v.id, 0));
 
-    // Greedily fit or reassign to other available vehicles
+    // Capacity repair: respects remaining capacity per vehicle
     vehicles.forEach((v) => {
       const vs = vehicleStateMap.get(v.id);
       const cap = vs ? vs.remainingCapacity : v.capacity;
@@ -692,7 +791,6 @@ export function runDynamicRerouting(
           resultMap.get(v.id)!.push(item.cust);
           vehicleLoads.set(v.id, curLoad + item.cust.demand);
         } else {
-          // Find alternative vehicle with remaining capacity
           let reassigned = false;
           for (const altV of targetVehicles) {
             const altVs = vehicleStateMap.get(altV.id);
@@ -706,9 +804,9 @@ export function runDynamicRerouting(
             }
           }
           if (!reassigned) {
-            // Place back on original vehicle anyway (penalized in fitness)
+            // Penalized assignment — included to avoid silent exclusion of infeasible customers
             resultMap.get(v.id)!.push(item.cust);
-            vehicleLoads.set(v.id, curLoad + item.cust.demand);
+            vehicleLoads.set(v.id, (vehicleLoads.get(v.id) || 0) + item.cust.demand);
           }
         }
       }
@@ -718,20 +816,24 @@ export function runDynamicRerouting(
   };
 
   let bestRoutes: VehicleRoute[] = [];
-  let bestPlanResult: RoutePlan;
+  let bestPlanResult!: RoutePlan;
   let bestScore = Infinity;
+  let candidateEvaluations = 0;
+  let populationSize = 0;
+  let iterations = 0;
 
   if (numPending === 0) {
-    // No pending customers; all vehicles return to depot directly
+    // All customers already served — vehicles return directly to depot
     const assignments = new Map<string, Customer[]>();
     vehicles.forEach((v) => assignments.set(v.id, []));
     bestRoutes = buildCandidateRoutes(assignments);
     const evalRes = evaluateCandidatePlan(bestRoutes);
     bestPlanResult = evalRes.plan;
     bestScore = evalRes.score;
+    populationSize = 0;
+    iterations = 0;
   } else if (algorithmName === 'greedy') {
-    // Greedy baseline re-route
-    // Prioritize vehicles currently closest to each pending customer
+    // Greedy re-route: nearest-neighbor from each vehicle's current position
     const assignments = new Map<string, Customer[]>();
     vehicles.forEach((v) => assignments.set(v.id, []));
     const vehicleLoads = new Map<string, number>();
@@ -768,7 +870,6 @@ export function runDynamicRerouting(
       }
 
       if (shortestTravelTime === Infinity) {
-        // Fallback: assign to first available vehicle
         const fallbackCust = remainingToAssign.shift()!;
         assignments.get(vehicles[0].id)!.push(fallbackCust);
       } else {
@@ -782,14 +883,20 @@ export function runDynamicRerouting(
     const evalRes = evaluateCandidatePlan(bestRoutes);
     bestPlanResult = evalRes.plan;
     bestScore = evalRes.score;
+    populationSize = 0;
+    iterations = 0;
   } else {
-    // QPSO (Default) or Classical PSO Re-routing Optimizer
+    // QPSO (default) or Classical PSO re-routing
+    // Fast Re-route: 15 particles, 25 iterations, beta 1.0→0.5 = 390 candidate evaluations
     const preset = QPSO_PRESETS[presetName] || QPSO_PRESETS['Fast Re-route'];
     const popSize = preset.populationSize;
     const iters = preset.iterations;
-    const rng = new SeededRandom((scenario.seed ^ 0x72657274 ^ 26137) >>> 0); // 'rert'
+    populationSize = popSize;
+    iterations = iters;
 
-    // Particle representation
+    // Deterministic seed derived from scenario seed + rerouting tag (no Math.random())
+    const rng = new SeededRandom((scenario.seed ^ 0x72657274 ^ 26137) >>> 0);
+
     interface RerouteParticle {
       assignKeys: number[];
       prioKeys: number[];
@@ -802,7 +909,6 @@ export function runDynamicRerouting(
     let gbestAssignKeys: number[] = [];
     let gbestPrioKeys: number[] = [];
 
-    // Initialize particles
     for (let i = 0; i < popSize; i++) {
       const assignKeys = new Array(numPending);
       const prioKeys = new Array(numPending);
@@ -832,14 +938,13 @@ export function runDynamicRerouting(
       }
     }
 
-    // QPSO Iteration loop with Mean-Best attractor
+    // QPSO iteration loop with Mean-Best attractor (beta decays linearly)
     for (let t = 0; t < iters; t++) {
       const beta =
         iters <= 1
           ? preset.betaEnd
           : preset.betaStart - ((preset.betaStart - preset.betaEnd) * t) / (iters - 1);
 
-      // Mean-Best across personal bests
       const mbestAssign = new Array(numPending).fill(0);
       const mbestPrio = new Array(numPending).fill(0);
       for (const p of particles) {
@@ -857,34 +962,20 @@ export function runDynamicRerouting(
         const p = particles[i];
 
         for (let j = 0; j < numPending; j++) {
-          // Assignment key update
           const phiA = rng.next();
           const uA = rng.next();
           const signA: 1 | -1 = rng.next() < 0.5 ? 1 : -1;
           p.assignKeys[j] = qpsoCoordinateUpdate(
-            p.assignKeys[j],
-            p.pbestAssignKeys[j],
-            gbestAssignKeys[j],
-            mbestAssign[j],
-            beta,
-            phiA,
-            uA,
-            signA
+            p.assignKeys[j], p.pbestAssignKeys[j], gbestAssignKeys[j],
+            mbestAssign[j], beta, phiA, uA, signA
           );
 
-          // Priority key update
           const phiP = rng.next();
           const uP = rng.next();
           const signP: 1 | -1 = rng.next() < 0.5 ? 1 : -1;
           p.prioKeys[j] = qpsoCoordinateUpdate(
-            p.prioKeys[j],
-            p.pbestPrioKeys[j],
-            gbestPrioKeys[j],
-            mbestPrio[j],
-            beta,
-            phiP,
-            uP,
-            signP
+            p.prioKeys[j], p.pbestPrioKeys[j], gbestPrioKeys[j],
+            mbestPrio[j], beta, phiP, uP, signP
           );
         }
 
@@ -912,49 +1003,42 @@ export function runDynamicRerouting(
   const t1 = performance.now();
   const runtimeMs = Number((t1 - t0).toFixed(3));
 
-  // Compute metrics
+  // Sum revised travel time across all vehicle routes
   let revisedRemainingTravelMinutes = 0;
-  bestRoutes.forEach((r) => {
-    revisedRemainingTravelMinutes += r.travelMinutes;
-  });
+  bestRoutes.forEach((r) => { revisedRemainingTravelMinutes += r.travelMinutes; });
   revisedRemainingTravelMinutes = Number(revisedRemainingTravelMinutes.toFixed(2));
 
-  // Delay avoided = (incident travel time without reroute) - (revised travel time with reroute)
-  const delayAvoidedMinutes = Number(
-    Math.max(0, incidentAdjustedRemainingTravelMinutes - revisedRemainingTravelMinutes).toFixed(2)
-  );
+  // Delay avoided: only calculable if incident-adjusted time is finite (not blocked)
+  let delayAvoidedMinutes: number | null = null;
+  if (incidentAdjustedRemainingTravelMinutes !== null) {
+    delayAvoidedMinutes = Number(
+      Math.max(0, incidentAdjustedRemainingTravelMinutes - revisedRemainingTravelMinutes).toFixed(2)
+    );
+  }
 
-  // Route stability changes: count of pending customers that switched vehicles
+  // Route stability: count pending customer stops that changed vehicle
   let routeStabilityChanges = 0;
   const originalVehicleMap = new Map<string, string>();
   vehicleDynamicStates.forEach((vs) => {
     vs.pendingCustomerIds.forEach((cId) => originalVehicleMap.set(cId, vs.vehicleId));
   });
-
   bestRoutes.forEach((r) => {
     r.customerIds.forEach((cId) => {
       const origV = originalVehicleMap.get(cId);
-      if (origV && origV !== r.vehicleId) {
-        routeStabilityChanges++;
-      }
+      if (origV && origV !== r.vehicleId) routeStabilityChanges++;
     });
   });
 
-  // Updated VehicleDynamicStates marked as revised
   const revisedVehicleStates: VehicleDynamicState[] = vehicleDynamicStates.map((vs) => {
     const revisedRoute = bestRoutes.find((r) => r.vehicleId === vs.vehicleId);
-    const newPending = revisedRoute ? [...revisedRoute.customerIds] : [];
     return {
       ...vs,
-      pendingCustomerIds: newPending,
+      pendingCustomerIds: revisedRoute ? [...revisedRoute.customerIds] : [],
       executionState: 'revised',
     };
   });
 
-  const finalPlan: RoutePlan = {
-    ...bestPlanResult!,
-    runtimeMs,
-  };
+  const finalPlan: RoutePlan = { ...bestPlanResult!, runtimeMs };
 
   const revisedSnapshot: RoutePlanSnapshot = deepClone({
     id: `snapshot-revised-${Date.now()}`,
@@ -968,29 +1052,34 @@ export function runDynamicRerouting(
     vehicleDynamicStates: revisedVehicleStates,
   });
 
-  const initialSnapshot: RoutePlanSnapshot = deepClone({
-    id: `snapshot-init-${Date.now()}`,
-    timestamp: new Date().toISOString(),
-    label: 'initial_plan',
-    scenarioId: scenario.id,
-    scenarioSeed: scenario.seed,
-    algorithm: algorithmName,
-    routePlan: finalPlan,
-    trafficState: scenario.edges,
-    vehicleDynamicStates,
-  });
+  // Use externally-provided snapshots (immutable) or create placeholders for test use
+  const initialSnapshot: RoutePlanSnapshot = externalInitialSnapshot
+    ? deepClone(externalInitialSnapshot)
+    : deepClone({
+      id: `snapshot-init-${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      label: 'initial_plan',
+      scenarioId: scenario.id,
+      scenarioSeed: scenario.seed,
+      algorithm: algorithmName,
+      routePlan: finalPlan,
+      trafficState: scenario.edges,
+      vehicleDynamicStates,
+    });
 
-  const preIncidentSnapshot: RoutePlanSnapshot = deepClone({
-    id: `snapshot-pre-${Date.now()}`,
-    timestamp: new Date().toISOString(),
-    label: 'pre_incident',
-    scenarioId: scenario.id,
-    scenarioSeed: scenario.seed,
-    algorithm: algorithmName,
-    routePlan: finalPlan,
-    trafficState: incidentEdges,
-    vehicleDynamicStates,
-  });
+  const preIncidentSnapshot: RoutePlanSnapshot = externalPreIncidentSnapshot
+    ? deepClone(externalPreIncidentSnapshot)
+    : deepClone({
+      id: `snapshot-pre-${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      label: 'pre_incident',
+      scenarioId: scenario.id,
+      scenarioSeed: scenario.seed,
+      algorithm: algorithmName,
+      routePlan: finalPlan,
+      trafficState: scenario.edges,
+      vehicleDynamicStates,
+    });
 
   return {
     initialSnapshot,
@@ -998,6 +1087,7 @@ export function runDynamicRerouting(
     revisedSnapshot,
     incident,
     reroutingAlgorithm: algorithmName,
+    reroutingPreset: presetName,
     reroutingRuntimeMs: runtimeMs,
     affectedVehicleIds: incident.affectedVehicleIds,
     originalRemainingTravelMinutes,
@@ -1006,5 +1096,11 @@ export function runDynamicRerouting(
     delayAvoidedMinutes,
     routeStabilityChanges,
     warnings,
+    lockedCustomerCount: routingContext.lockedCustomerIds.length,
+    eligibleCustomerIds: routingContext.eligibleCustomerIds,
+    populationSize,
+    iterations,
+    candidateEvaluations,
+    revisedFeasible: bestPlanResult?.isFeasible ?? false,
   };
 }

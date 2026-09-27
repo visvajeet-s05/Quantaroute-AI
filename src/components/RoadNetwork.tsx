@@ -15,6 +15,8 @@ interface RoadNetworkProps {
   routePlan?: RoutePlan | null;
   vehicleDynamicStates?: VehicleDynamicState[] | null;
   incident?: DynamicIncident | null;
+  preIncidentPlan?: RoutePlan | null;
+  activePlanView?: 'initial' | 'pre_incident' | 'revised';
 }
 
 export const RoadNetwork: React.FC<RoadNetworkProps> = ({
@@ -28,6 +30,8 @@ export const RoadNetwork: React.FC<RoadNetworkProps> = ({
   routePlan,
   vehicleDynamicStates,
   incident,
+  preIncidentPlan,
+  activePlanView = 'initial',
 }) => {
   const [hoveredCustomer, setHoveredCustomer] = useState<Customer | null>(null);
   const [hoveredVehicle, setHoveredVehicle] = useState<Vehicle | null>(null);
@@ -95,6 +99,54 @@ export const RoadNetwork: React.FC<RoadNetworkProps> = ({
   const incidentAffectedEdgeSet = new Set<string>();
   if (incident?.active && incident.affectedEdgeIds) {
     incident.affectedEdgeIds.forEach((eId) => incidentAffectedEdgeSet.add(eId));
+  }
+
+  // Determine completed (already-traversed) edges from pre-incident plan + vehicle positions.
+  // For each vehicle with delivered customers, the edges from the route start up to the
+  // vehicle's current node are considered "completed".
+  const completedEdgeSet = new Set<string>();
+  if (preIncidentPlan && vehicleDynamicStates) {
+    preIncidentPlan.vehicleRoutes.forEach((vr) => {
+      const vs = vehicleDynamicStateMap.get(vr.vehicleId);
+      if (!vs || vs.deliveredCustomerIds.length === 0) return;
+
+      const currentNodeId = vs.currentNodeId;
+      // Walk through the pre-incident route path and mark edges up to the current node as completed
+      let foundCurrent = false;
+      for (let i = 1; i < vr.fullPathNodeIds.length; i++) {
+        const prevNode = vr.fullPathNodeIds[i - 1];
+        const currNode = vr.fullPathNodeIds[i];
+        if (foundCurrent || currNode === currentNodeId) {
+          foundCurrent = true;
+          // This segment has been traversed
+        }
+        // Mark edges that come before reaching current node as completed
+        if (!foundCurrent || currNode === currentNodeId) {
+          // Look for the edge between prevNode and currNode
+          const directedEdge = edges.find((e) => e.from === prevNode && e.to === currNode);
+          const reverseEdge = edges.find((e) => e.from === currNode && e.to === prevNode);
+          if (directedEdge) completedEdgeSet.add(directedEdge.id);
+          if (reverseEdge) completedEdgeSet.add(reverseEdge.id);
+        }
+        if (currNode === currentNodeId) {
+          foundCurrent = true;
+        }
+      }
+    });
+  }
+
+  // Set of edge IDs used by the revised routes (for highlighting)
+  const revisedEdgeSet = new Set<string>();
+  const preIncidentEdgeSet = new Set<string>();
+  if (routePlan) {
+    routePlan.vehicleRoutes.forEach((vr) => {
+      vr.fullPathEdgeIds.forEach((eId) => revisedEdgeSet.add(eId));
+    });
+  }
+  if (preIncidentPlan) {
+    preIncidentPlan.vehicleRoutes.forEach((vr) => {
+      vr.fullPathEdgeIds.forEach((eId) => preIncidentEdgeSet.add(eId));
+    });
   }
 
   // Color mapper for traffic multiplier
@@ -419,7 +471,110 @@ export const RoadNetwork: React.FC<RoadNetworkProps> = ({
               </g>
             )}
 
-            {/* Fleet Routes Overlay (Greedy Multi-Vehicle Routes) */}
+            {/* Completed Segments (faded/dashed) — already-traversed edges from pre-incident plan */}
+            {activePlanView === 'revised' && completedEdgeSet.size > 0 && (
+              <g id="completed-segments" className="pointer-events-none">
+                {preIncidentPlan &&
+                  preIncidentPlan.vehicleRoutes.map((route, vIdx) => {
+                    if (route.fullPathEdgeIds.length === 0) return null;
+                    const vDef = vehicles.find((v) => v.id === route.vehicleId);
+                    const color =
+                      vDef?.color ||
+                      (route.vehicleId === 'V1'
+                        ? '#2563eb'
+                        : route.vehicleId === 'V2'
+                        ? '#9333ea'
+                        : '#0d9488');
+
+                    const offset = (vIdx - 1) * 2.8;
+
+                    const completedNodeIds: string[] = [];
+                    let started = false;
+                    for (let i = 0; i < route.fullPathNodeIds.length; i++) {
+                      const nodeId = route.fullPathNodeIds[i];
+                      completedNodeIds.push(nodeId);
+                      // Stop after the vehicle's current node
+                      const vs = vehicleDynamicStateMap.get(route.vehicleId);
+                      if (vs && nodeId === vs.currentNodeId) {
+                        started = true;
+                        break;
+                      }
+                    }
+                    if (!started || completedNodeIds.length <= 1) return null;
+
+                    const pointsStr = completedNodeIds
+                      .map((id) => {
+                        const n = nodeMap.get(id);
+                        if (!n) return '';
+                        const p = getNodePos(n.x, n.y);
+                        return `${p.cx + offset},${p.cy + offset}`;
+                      })
+                      .filter(Boolean)
+                      .join(' ');
+
+                    if (!pointsStr) return null;
+
+                    return (
+                      <polyline
+                        key={`completed-${route.vehicleId}`}
+                        points={pointsStr}
+                        fill="none"
+                        stroke={color}
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeOpacity="0.2"
+                        strokeDasharray="4 3"
+                      />
+                    );
+                  })}
+              </g>
+            )}
+
+            {/* Pre-Incident Reference Routes (faint/dashed) — shown behind revised routes */}
+            {activePlanView === 'revised' && preIncidentPlan && (
+              <g id="pre-incident-reference" className="pointer-events-none">
+                {preIncidentPlan.vehicleRoutes.map((route, vIdx) => {
+                  if (route.fullPathNodeIds.length <= 1) return null;
+                  const vDef = vehicles.find((v) => v.id === route.vehicleId);
+                  const color =
+                    vDef?.color ||
+                    (route.vehicleId === 'V1'
+                      ? '#2563eb'
+                      : route.vehicleId === 'V2'
+                      ? '#9333ea'
+                      : '#0d9488');
+
+                  const offset = (vIdx - 1) * 2.8;
+
+                  const pointsStr = route.fullPathNodeIds
+                    .map((id) => {
+                      const n = nodeMap.get(id);
+                      if (!n) return '';
+                      const p = getNodePos(n.x, n.y);
+                      return `${p.cx + offset},${p.cy + offset}`;
+                    })
+                    .filter(Boolean)
+                    .join(' ');
+
+                  return (
+                    <polyline
+                      key={`pre-incident-${route.vehicleId}`}
+                      points={pointsStr}
+                      fill="none"
+                      stroke={color}
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeOpacity="0.1"
+                      strokeDasharray="5 4"
+                    />
+                  );
+                })}
+              </g>
+            )}
+
+            {/* Fleet Routes Overlay */}
             {routePlan && (
               <g id="fleet-routes" className="pointer-events-none">
                 {routePlan.vehicleRoutes.map((route, vIdx) => {
@@ -1051,6 +1206,26 @@ export const RoadNetwork: React.FC<RoadNetworkProps> = ({
             <span className="w-3 h-3 rounded-full border border-rose-500 bg-rose-500/20 text-[8px] flex items-center justify-center text-rose-400 font-bold">!</span>
             <span className="text-[11px] text-rose-400 font-medium">Unserved Customer</span>
           </div>
+
+          {/* Dynamic Re-Routing Legend Entries (visible when rerouting result present) */}
+          {activePlanView === 'revised' && preIncidentPlan && (
+            <>
+              <div className="flex items-center gap-1.5">
+                <span className="w-4 h-1.5 rounded-full bg-blue-500 inline-block shadow-xs shadow-blue-400/30"></span>
+                <span className="text-[11px] text-blue-300 font-semibold">Revised Route</span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <span className="w-4 h-1.5 rounded-full bg-slate-500 inline-block opacity-10 shadow-xs" style={{ strokeDasharray: '5 4' }}></span>
+                <span className="text-[11px] text-slate-400 font-medium">Pre-Incident Ref.</span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <span className="w-4 h-1.5 rounded-full bg-slate-400 inline-block opacity-20 shadow-xs" style={{ strokeDasharray: '4 3' }}></span>
+                <span className="text-[11px] text-slate-400 font-medium">Completed Segment</span>
+              </div>
+            </>
+          )}
 
           {pathResult && (
             <div className="flex items-center gap-1.5">
