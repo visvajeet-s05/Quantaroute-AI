@@ -1,8 +1,10 @@
 import React from 'react';
-import { X, CheckCircle2, XCircle, ShieldCheck, Hash, Calendar, Users, Truck, Route, Clock, Zap, Cpu, Sparkles } from 'lucide-react';
+import { X, CheckCircle2, XCircle, ShieldCheck, Hash, Calendar, Users, Truck, Route, Clock, Zap, Cpu, Sparkles, BarChart3 } from 'lucide-react';
 import { ScenarioValidationReport } from '../types/domain';
 import { DijkstraUnitTestResult } from '../types/pathfinding';
 import { GreedyUnitTestResult, PsoUnitTestResult, QpsoUnitTestResult, ReroutingUnitTestResult } from '../types/routing';
+import { ExperimentUnitTestResult } from '../types/experiments';
+import { CapstoneUnitTestResult } from '../types/capstone';
 
 interface ValidationModalProps {
   isOpen: boolean;
@@ -13,6 +15,8 @@ interface ValidationModalProps {
   psoTests?: PsoUnitTestResult[];
   qpsoTests?: QpsoUnitTestResult[];
   reroutingTests?: ReroutingUnitTestResult[];
+  experimentTests?: ExperimentUnitTestResult[];
+  capstoneTests?: CapstoneUnitTestResult[];
 }
 
 export const ValidationModal: React.FC<ValidationModalProps> = ({
@@ -24,6 +28,8 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
   psoTests = [],
   qpsoTests = [],
   reroutingTests = [],
+  experimentTests = [],
+  capstoneTests = [],
 }) => {
   if (!isOpen) return null;
 
@@ -32,13 +38,17 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
   const allPsoPassed = psoTests.length === 0 || psoTests.every((t) => t.passed);
   const allQpsoPassed = qpsoTests.length === 0 || qpsoTests.every((t) => t.passed);
   const allReroutingPassed = reroutingTests.length === 0 || reroutingTests.every((t) => t.passed);
+  const allExperimentPassed = experimentTests.length === 0 || experimentTests.every((t) => t.passed);
+  const allCapstonePassed = capstoneTests.length === 0 || capstoneTests.every((t) => t.passed);
   const overallValid =
     report.isValid &&
     (dijkstraTests.length === 0 || allDijkstraPassed) &&
     allGreedyPassed &&
     allPsoPassed &&
     allQpsoPassed &&
-    allReroutingPassed;
+    allReroutingPassed &&
+    allExperimentPassed &&
+    allCapstonePassed;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-fadeIn">
@@ -434,13 +444,70 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
             </div>
           )}
 
-          {/* Section 6: Scenario Domain Invariants */}
-          <div className="space-y-2">
-            <h4 className="font-semibold text-slate-800 text-xs uppercase tracking-wide flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
-              Scenario Invariant Checks
-            </h4>
-            <div className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden bg-slate-50/50">
+           {/* Section 6: Experiment Management Verification Tests */}
+           {experimentTests.length > 0 && (
+             <div className="space-y-2">
+               <div className="flex items-center justify-between">
+                 <h4 className="font-semibold text-slate-800 text-xs uppercase tracking-wide flex items-center gap-1.5">
+                   <BarChart3 className="w-3.5 h-3.5 text-cyan-600" />
+                   Experiment Management Checks (6 Invariants)
+                 </h4>
+                 <span className="text-[11px] font-mono">
+                   {experimentTests.filter((t) => t.passed).length}/{experimentTests.length} Passed
+                 </span>
+               </div>
+
+               <div className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden bg-white">
+                 {experimentTests.map((t) => (
+                   <div key={t.id} className="p-3 hover:bg-slate-50/50 space-y-1.5">
+                     <div className="flex items-start justify-between gap-3">
+                       <div>
+                         <div className="font-semibold text-slate-800 flex items-center gap-2">
+                           <span>{t.id.split('-')[1]}.</span>
+                           <span>{t.name}</span>
+                           <span className="text-[10px] text-slate-400 font-mono font-normal">
+                             ({t.runtimeMs.toFixed(0)} ms)
+                           </span>
+                         </div>
+                         <div className="text-[11px] text-slate-600 mt-0.5">{t.summary}</div>
+                       </div>
+                       <span
+                         className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold shrink-0 ${
+                           t.passed
+                             ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                             : 'bg-rose-50 text-rose-700 border border-rose-200'
+                         }`}
+                       >
+                         {t.passed ? (
+                           <>
+                             <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                             Pass
+                           </>
+                         ) : (
+                           <>
+                             <XCircle className="w-3 h-3 text-rose-600" />
+                             Fail
+                           </>
+                         )}
+                       </span>
+                     </div>
+
+                     <div className="bg-slate-50 rounded-lg p-2 border border-slate-100 text-[11px] font-mono text-slate-500">
+                       • {t.details}
+                     </div>
+                   </div>
+                 ))}
+               </div>
+             </div>
+           )}
+
+           {/* Section 6: Scenario Domain Invariants */}
+           <div className="space-y-2">
+             <h4 className="font-semibold text-slate-800 text-xs uppercase tracking-wide flex items-center gap-1.5">
+               <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
+               Scenario Invariant Checks
+             </h4>
+             <div className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden bg-slate-50/50">
               {report.checks.map((check, idx) => (
                 <div key={idx} className="p-3 flex items-start justify-between gap-3 bg-white">
                   <div className="space-y-0.5">
@@ -475,7 +542,61 @@ export const ValidationModal: React.FC<ValidationModalProps> = ({
           </div>
         </div>
 
-        {/* Modal Footer */}
+         {/* Section 8: Capstone Presentation Checks */}
+         {capstoneTests.length > 0 && (
+           <div className="space-y-2">
+             <div className="flex items-center justify-between">
+               <h4 className="font-semibold text-slate-800 text-xs uppercase tracking-wide flex items-center gap-1.5">
+                 <BarChart3 className="w-3.5 h-3.5 text-cyan-600" />
+                 Capstone Presentation Checks (5 Invariants)
+               </h4>
+               <span className="text-[11px] font-mono">
+                 {capstoneTests.filter((t) => t.passed).length}/{capstoneTests.length} Passed
+               </span>
+             </div>
+
+             <div className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden bg-white">
+               {capstoneTests.map((t) => (
+                 <div key={t.id} className="p-3 hover:bg-slate-50/50 space-y-1.5">
+                   <div className="flex items-start justify-between gap-3">
+                     <div>
+                       <div className="font-semibold text-slate-800 flex items-center gap-2">
+                         <span>{t.id.split('-')[1]}.</span>
+                         <span>{t.name}</span>
+                       </div>
+                       <div className="text-[11px] text-slate-600 mt-0.5">{t.summary}</div>
+                     </div>
+                     <span
+                       className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold shrink-0 ${
+                         t.passed
+                           ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                           : 'bg-rose-50 text-rose-700 border border-rose-200'
+                       }`}
+                     >
+                       {t.passed ? (
+                         <>
+                           <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                           Pass
+                         </>
+                       ) : (
+                         <>
+                           <XCircle className="w-3 h-3 text-rose-600" />
+                           Fail
+                         </>
+                       )}
+                     </span>
+                   </div>
+
+                   <div className="bg-slate-50 rounded-lg p-2 border border-slate-100 text-[11px] font-mono text-slate-500">
+                     • {t.details}
+                   </div>
+                 </div>
+               ))}
+             </div>
+           </div>
+         )}
+
+         {/* Modal Footer */}
         <div className="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-end">
           <button
             onClick={onClose}

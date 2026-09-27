@@ -47,11 +47,24 @@ import { runGreedyUnitTests } from './utils/greedyValidationTests';
 import { runPsoUnitTests } from './utils/psoValidationTests';
 import { runQpsoUnitTests } from './utils/qpsoValidationTests';
 import { runReroutingUnitTests } from './utils/reroutingValidationTests';
+import { runExperimentUnitTests } from './utils/experimentValidationTests';
+import { runCapstonePresentationTests } from './utils/capstonePresentationValidationTests';
+import { ExperimentUnitTestResult, ExperimentHistory as ExperimentHistoryType } from './types/experiments';
+import { CapstoneUnitTestResult } from './types/capstone';
 import { validateScenario } from './utils/scenarioValidation';
 import { ReroutingResultSummary } from './components/ReroutingResultSummary';
 import { ReroutingResultPanel } from './components/ReroutingResultPanel';
+import { ExperimentManager } from './components/ExperimentManager';
+import { ExperimentHistory } from './components/ExperimentHistory';
+import { CapstoneHub } from './components/CapstoneHub';
 import { AlertOctagon, CheckCircle2 } from 'lucide-react';
 import { Edge } from './types/domain';
+import {
+  loadExperimentHistory,
+  saveExperimentHistory,
+  clearExperimentHistory,
+  getStorageKey,
+} from './utils/experimentStorage';
 
 export default function App() {
   const [activePreset, setActivePreset] = useState<ScenarioPreset>('normal');
@@ -143,6 +156,31 @@ export default function App() {
   const reroutingTestResults = useMemo(() => {
     return runReroutingUnitTests(scenario);
   }, [scenario]);
+
+  // Run isolated Experiment Management test suite (6 invariants)
+  const experimentTestResults = useMemo(() => {
+    return runExperimentUnitTests(scenario);
+  }, [scenario]);
+
+  // Run isolated Capstone Presentation test suite (5 invariants)
+  const capstoneTestResults = useMemo(() => {
+    return runCapstonePresentationTests();
+  }, []);
+
+  // Experiment history state
+  const [experimentHistory, setExperimentHistory] = useState<ExperimentHistoryType>(() => {
+    const loaded = loadExperimentHistory();
+    return loaded.ok ? loaded.history : [];
+  });
+
+  const [selectedExperimentRecord, setSelectedExperimentRecord] = useState<ExperimentRecord | null>(null);
+
+  const handleRecordsAdded = () => {
+    const loaded = loadExperimentHistory();
+    if (loaded.ok) {
+      setExperimentHistory(loaded.history);
+    }
+  };
 
   // Candidate incident edges on active vehicle paths
   const candidateIncidentEdges = useMemo(() => {
@@ -736,8 +774,26 @@ export default function App() {
             psoResult={psoResult}
             qpsoResult={qpsoResult}
           />
-        </div>
-      </main>
+         </div>
+
+         {/* Controlled Experiments Section */}
+         <div>
+           <ExperimentManager
+             onRecordsAdded={handleRecordsAdded}
+           />
+         </div>
+
+{/* Capstone Presentation Hub */}
+          <div>
+            <CapstoneHub 
+              onOpenValidation={() => setValidationOpen(true)} 
+              scenario={scenario}
+              experimentHistory={experimentHistory}
+              selectedExperimentRecord={selectedExperimentRecord}
+              onSelectRecord={setSelectedExperimentRecord}
+            />
+          </div>
+       </main>
 
       {/* Footer Info */}
       <footer className="border-t border-slate-200 bg-white/60 py-3 px-4 text-center text-xs text-slate-500">
@@ -757,6 +813,8 @@ export default function App() {
         psoTests={psoTestResults}
         qpsoTests={qpsoTestResults}
         reroutingTests={reroutingTestResults}
+        experimentTests={experimentTestResults}
+        capstoneTests={capstoneTestResults}
       />
     </div>
   );

@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "source": "Temporary Fixture",
+    "exportKind": "temporary_frontend_parity_stub",
+    "exportedAt": "2026-09-27T12:00:00.000Z",
+    "scenarioSeed": 26137,
+    "algorithm": "greedy",
+    "preset": "normal",
+    "optimizerSeed": 26137,
+    "appVersion": "1.0.0",
+    "sourceVerified": false
+  },
+  "scenario": {
+    "id": "frontend_parity_greedy_26137",
+    "name": "Frontend Parity Greedy Normal 26137",
+    "seed": 26137,
+    "depotNodeId": "n_0_0",
+    "nodes": [
+      {"id": "n_0_0", "x": 0, "y": 0, "kind": "depot"},
+      {"id": "n_1_0", "x": 1, "y": 0, "kind": "customer"},
+      {"id": "n_2_0", "x": 2, "y": 0, "kind": "customer"},
+      {"id": "n_0_1", "x": 0, "y": 1, "kind": "intersection"},
+      {"id": "n_1_1", "x": 1, "y": 1, "kind": "intersection"}
+    ],
+    "edges": [
+      {"id": "e_0_0_to_1_0", "from": "n_0_0", "to": "n_1_0", "distanceKm": 1.0, "baseTravelMinutes": 2.0, "congestionMultiplier": 1.0, "isBlocked": false},
+      {"id": "e_1_0_to_0_0", "from": "n_1_0", "to": "n_0_0", "distanceKm": 1.0, "baseTravelMinutes": 2.0, "congestionMultiplier": 1.0, "isBlocked": false},
+      {"id": "e_1_0_to_2_0", "from": "n_1_0", "to": "n_2_0", "distanceKm": 1.0, "baseTravelMinutes": 2.0, "congestionMultiplier": 1.0, "isBlocked": false},
+      {"id": "e_2_0_to_0_0", "from": "n_2_0", "to": "n_0_0", "distanceKm": 1.5, "baseTravelMinutes": 3.0, "congestionMultiplier": 1.0, "isBlocked": false},
+      {"id": "e_0_0_to_0_1", "from": "n_0_0", "to": "n_0_1", "distanceKm": 1.0, "baseTravelMinutes": 2.0, "congestionMultiplier": 1.0, "isBlocked": false},
+      {"id": "e_0_1_to_0_0", "from": "n_0_1", "to": "n_0_0", "distanceKm": 1.0, "baseTravelMinutes": 2.0, "congestionMultiplier": 1.0, "isBlocked": false},
+      {"id": "e_0_1_to_1_1", "from": "n_0_1", "to": "n_1_1", "distanceKm": 1.0, "baseTravelMinutes": 2.0, "congestionMultiplier": 1.0, "isBlocked": false},
+      {"id": "e_1_1_to_0_1", "from": "n_1_1", "to": "n_0_1", "distanceKm": 1.0, "baseTravelMinutes": 2.0, "congestionMultiplier": 1.0, "isBlocked": false},
+      {"id": "e_1_1_to_2_0", "from": "n_1_1", "to": "n_2_0", "distanceKm": 1.0, "baseTravelMinutes": 2.0, "congestionMultiplier": 1.0, "isBlocked": false}
+    ],
+    "customers": [
+      {"id": "C01", "nodeId": "n_1_0", "demand": 5, "status": "pending"},
+      {"id": "C02", "nodeId": "n_2_0", "demand": 6, "status": "pending"}
+    ],
+    "vehicles": [
+      {"id": "V1", "label": "Vehicle 1", "capacity": 30, "usedCapacity": 0, "currentNodeId": "n_0_0", "assignedCustomerIds": [], "completedCustomerIds": [], "color": "#2563eb", "status": "awaiting_optimization"},
+      {"id": "V2", "label": "Vehicle 2", "capacity": 25, "usedCapacity": 0, "currentNodeId": "n_0_0", "assignedCustomerIds": [], "completedCustomerIds": [], "color": "#9333ea", "status": "awaiting_optimization"}
+    ],
+    "incidents": []
+  },
+  "routePlan": {
+    "algorithm": "greedy",
+    "scenarioId": "frontend_parity_greedy_26137",
+    "seed": 26137,
+    "depotNodeId": "n_0_0",
+    "vehicleRoutes": [
+      {
+        "vehicleId": "V1",
+        "customerIds": ["C01"],
+        "fullPathNodeIds": ["n_0_0", "n_1_0", "n_0_0"],
+        "fullPathEdgeIds": ["e_0_0_to_1_0", "e_1_0_to_0_0"],
+        "startNodeId": "n_0_0",
+        "endNodeId": "n_0_0",
+        "completedCustomerIds": [],
+        "pendingCustomerIds": ["C01"],
+        "isDynamicReroute": false
+      },
+      {
+        "vehicleId": "V2",
+        "customerIds": ["C02"],
+        "fullPathNodeIds": ["n_0_0", "n_1_0", "n_2_0", "n_0_0"],
+        "fullPathEdgeIds": ["e_0_0_to_1_0", "e_1_0_to_2_0", "e_2_0_to_0_0"],
+        "startNodeId": "n_0_0",
+        "endNodeId": "n_0_0",
+        "completedCustomerIds": [],
+        "pendingCustomerIds": ["C02"],
+        "isDynamicReroute": false
+      }
+    ],
+    "mode": "initial"
+  },
+  "frontendEvaluation": {
+    "totalTravelMinutes": 11.0,
+    "totalDistanceKm": 5.5,
+    "totalCongestionPenalty": 0.0,
+    "routingScore": 7.425,
+    "penaltyTotal": 0.0,
+    "customersAssigned": 2,
+    "customersUnserved": 0,
+    "unservedCustomerIds": [],
+    "duplicateCustomerIds": [],
+    "capacityViolationVehicleIds": [],
+    "blockedEdgeViolationIds": [],
+    "unreachableVehicleIds": [],
+    "pathContinuityViolationVehicleIds": [],
+    "feasible": true,
+    "warnings": []
+  }
+}
